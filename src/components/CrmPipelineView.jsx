@@ -126,7 +126,7 @@ export default function CrmPipelineView({ leads, onOpenLead, onUpdateLeadStatus,
       </div>
 
       {/* Kanban Board Columns Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 items-start overflow-x-auto min-h-[600px] pb-4">
+      <div className="flex md:grid md:grid-cols-3 xl:grid-cols-6 gap-4 items-start overflow-x-auto snap-x snap-mandatory min-h-[550px] pb-6 scrollbar-thin">
         {COLUMNS.map((col) => {
           const colLeads = filteredLeads.filter(l => l.status === col.id);
           const colTotalSum = colLeads.reduce((s, l) => s + (l.productPrice || 0), 0);
@@ -134,7 +134,7 @@ export default function CrmPipelineView({ leads, onOpenLead, onUpdateLeadStatus,
           return (
             <div
               key={col.id}
-              className={`rounded-2xl p-3 border flex flex-col min-h-[520px] ${col.color} backdrop-blur-md`}
+              className={`rounded-2xl p-3 border flex flex-col min-h-[500px] min-w-[280px] md:min-w-0 snap-center ${col.color} backdrop-blur-md shrink-0 md:shrink`}
             >
               {/* Column Header */}
               <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-700/50">

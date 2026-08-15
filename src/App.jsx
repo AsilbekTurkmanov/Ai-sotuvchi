@@ -21,6 +21,7 @@ export default function App() {
   const [botStatus, setBotStatus] = useState({ isRunning: false });
   const [selectedLead, setSelectedLead] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Safe fetch helper for static hosting compatibility (GitHub Pages fallback)
   const safeFetch = async (url, fallbackData) => {
@@ -232,6 +233,8 @@ export default function App() {
         setActiveTab={setActiveTab}
         unreadCount={hotCount}
         onTestAlert={handleTestAlert}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
       {/* Main Workspace Layout */}
@@ -241,6 +244,8 @@ export default function App() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           hotCount={hotCount}
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
         />
 
         {/* Content View Container */}
@@ -329,6 +334,69 @@ export default function App() {
           onTriggerFollowUp={(leadId) => handleTriggerFollowUp(leadId, 'fu-1')}
         />
       )}
+
+      {/* Mobile Bottom Navigation Bar (Smartphones) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0f172a]/95 backdrop-blur-md border-t border-slate-800 z-30 px-3 flex items-center justify-around pb-safe">
+        <button
+          onClick={() => setActiveTab('dashboard')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-all ${
+            activeTab === 'dashboard' ? 'text-indigo-400 font-bold scale-105' : 'text-slate-400'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'dashboard' ? 'bg-indigo-500/20' : ''}`}>
+            <span className="text-base">📊</span>
+          </div>
+          <span>Dashboard</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('simulator')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-all ${
+            activeTab === 'simulator' ? 'text-indigo-400 font-bold scale-105' : 'text-slate-400'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'simulator' ? 'bg-indigo-500/20' : ''}`}>
+            <span className="text-base">🤖</span>
+          </div>
+          <span>AI Chat</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('crm')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-all ${
+            activeTab === 'crm' ? 'text-indigo-400 font-bold scale-105' : 'text-slate-400'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'crm' ? 'bg-indigo-500/20' : ''}`}>
+            <span className="text-base">🎯</span>
+          </div>
+          <span>CRM</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('knowledge')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-all ${
+            activeTab === 'knowledge' ? 'text-indigo-400 font-bold scale-105' : 'text-slate-400'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'knowledge' ? 'bg-indigo-500/20' : ''}`}>
+            <span className="text-base">📚</span>
+          </div>
+          <span>Katalog</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('telegram')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-medium transition-all ${
+            activeTab === 'telegram' ? 'text-indigo-400 font-bold scale-105' : 'text-slate-400'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'telegram' ? 'bg-indigo-500/20' : ''}`}>
+            <span className="text-base">📲</span>
+          </div>
+          <span>Bot</span>
+        </button>
+      </div>
     </div>
   );
 }

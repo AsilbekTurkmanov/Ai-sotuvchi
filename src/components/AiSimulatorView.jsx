@@ -84,12 +84,43 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
   
   // Real Inson Ovozi & Klonlash State
   const [selectedVoice, setSelectedVoice] = useState("madina");
+  const [speechSpeed, setSpeechSpeed] = useState(0.95);
   const [isRecording, setIsRecording] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceVoiceOutput, setVoiceVoiceOutput] = useState(true);
   const [continuousCallMode, setContinuousCallMode] = useState(false);
   const [recognizedVoiceNote, setRecognizedVoiceNote] = useState("");
   const [speechSupported, setSpeechSupported] = useState(true);
+  const [showMobileDiagnostics, setShowMobileDiagnostics] = useState(false);
+
+  // Audio Chimes Synthesizer via Web Audio API
+  const playAudioChime = (type = 'receive') => {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      if (type === 'mic') {
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.12);
+      } else {
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.18);
+      }
+    } catch (e) {}
+  };
   
   // Voice Cloning Modal State
   const [showCloneModal, setShowCloneModal] = useState(false);
@@ -307,16 +338,17 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
       // Ovoz parametrlari — tabiiyroq sozlamalar
       const getVoiceParams = () => {
-        if (customPitch !== null) return { rate: 0.88, pitch: customPitch };
+        const mult = speechSpeed || 0.95;
+        if (customPitch !== null) return { rate: 0.88 * mult, pitch: customPitch };
         switch (selectedVoice) {
           case 'onyx': case 'sardor': case 'ahmet': case 'dmitry':
-            return { rate: 0.87, pitch: 0.85 };   // Erkak — sekinroq, pastroq
+            return { rate: 0.88 * mult, pitch: 0.88 };   // Erkak — sekinroq, pastroq
           case 'nova': case 'madina': case 'emel': case 'svetlana':
-            return { rate: 0.90, pitch: 1.05 };    // Ayol — biroz tezroq, balandroq  
+            return { rate: 0.92 * mult, pitch: 1.04 };    // Ayol — biroz tezroq, balandroq  
           case 'shimmer':
-            return { rate: 0.92, pitch: 1.08 };    // Yoqimli — ravon va iliq
+            return { rate: 0.94 * mult, pitch: 1.06 };    // Yoqimli — ravon va iliq
           default:
-            return { rate: 0.88, pitch: 0.95 };    // Default — tabiiy
+            return { rate: 0.90 * mult, pitch: 0.98 };    // Default — tabiiy
         }
       };
 
@@ -394,6 +426,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
       setIsRecording(false);
     } else {
       stopSpeaking();
+      playAudioChime('mic');
       try {
         recognitionRef.current.start();
       } catch (err) {
@@ -452,6 +485,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
           score: data.score, matchedProduct: data.matchedProduct, productPrice: data.productPrice,
           isHandoff: data.isHandoff, handoffReason: data.handoffReason, guardrailsPassed: true, usedLLM: data.usedLLM
         });
+        playAudioChime('receive');
         speakText(data.response);
       } else {
         throw new Error("API Offline / Static Mode");
@@ -460,9 +494,9 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
     } catch (err) {
       // Fallback for static hosting (GitHub Pages) demo simulation
       const fallbackReplies = [
-        `Assalomu alaykum! Savoringiz uchun rahmat. AppleUz do'konimizda iPhone 15 Pro 256GB va MacBook modellariga 1 yillik rasmiy kafolat hamda Uzum Nasiya orqali 12 oylik muddatli to'lov mavjud.`,
-        `Toshkent bo'ylab yetkazib berish 2 soatda BEPUL! Viloyatlarga BTS pochta orqali 1 kunda yetkazib beramiz. Buyurtma berasizmi?`,
-        `Albatta, karta raqamimiz: 8600 **** **** 1234. To'lov qilinganingizdan so'ng chekni yuborsangiz, darhol yetkazishni tashkillashtiramiz!`
+        `Assalomu alaykum! Savolingiz uchun rahmat. AppleUz do'konimizda iPhone 15 Pro 256GB va MacBook modellariga 1 yillik rasmiy kafolat hamda Uzum Nasiya orqali 12 oylik muddatli to'lov mavjud. Qaysi rang va xotira varianti ma'qul?`,
+        `Toshkent bo'ylab yetkazib berish 2 soatda BEPUL! Viloyatlarga BTS pochta orqali 1 kunda (35 000 so'm) yetkazib beramiz. Buyurtma raspisalaymizmi?`,
+        `Albatta! Karta raqamimiz: 8600 **** **** 1234 (AppleUz Store). To'lov qilinganingizdan so'ng chekni yuborsangiz, darhol kurerni jo'natamiz!`
       ];
       const reply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
       setMessages(prev => [
@@ -473,6 +507,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
           time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
         }
       ]);
+      playAudioChime('receive');
       speakText(reply);
     } finally {
       setLoading(false);
@@ -574,17 +609,37 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
       {/* Voice Persona Selector Banner */}
       <div className="glass-panel rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
-            <Headphones className="w-5 h-5" />
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
+              <Headphones className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-bold text-xs text-white">ChatGPT 4o & Klonlangan Ovoz Modellari</div>
+              <div className="text-[11px] text-slate-400">Har bir model jonli inson intonatsiyasida gapiradi</div>
+            </div>
           </div>
-          <div>
-            <div className="font-bold text-xs text-white">ChatGPT 4o & Klonlangan Ovoz Modellari</div>
-            <div className="text-[11px] text-slate-400">Har bir model jonli inson intonatsiyasida gapiradi</div>
+
+          {/* Speed Selector */}
+          <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700">
+            <span className="text-[10px] text-slate-400 font-medium px-1">Tezlik:</span>
+            {[0.8, 0.95, 1.2].map((spd) => (
+              <button
+                key={spd}
+                onClick={() => setSpeechSpeed(spd)}
+                className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all ${
+                  speechSpeed === spd
+                    ? 'bg-purple-600 text-white shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {spd === 0.95 ? '1.0x' : `${spd}x`}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 w-full md:w-auto">
           {VOICE_PERSONAS.map((p) => {
             const isSelected = selectedVoice === p.id;
             return (
@@ -607,10 +662,10 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
                 <div className="flex items-center justify-between gap-1 mb-0.5">
                   <div className="flex items-center gap-1 font-bold text-xs text-white truncate">
                     <span>{p.icon}</span>
-                    <span className="truncate">{p.name.slice(0, 14)}</span>
+                    <span className="truncate">{p.name.split(' ')[0]}</span>
                   </div>
                 </div>
-                <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono">
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono block truncate">
                   {p.badge}
                 </span>
               </button>
