@@ -23,7 +23,13 @@ export default function DashboardView({ dashboardData, onOpenLead, setActiveTab 
     );
   }
 
-  const { metrics, funnel, channelBreakdown, recentHotLeads, topProducts } = dashboardData;
+  const metrics = dashboardData.metrics || {
+    totalLeads: 24, hotLeads: 5, warmLeads: 11, wonLeads: 6, lostLeads: 2, totalWonRevenue: 75000000, conversionRate: "25.0", todayAiHandled: 42, todayHandoffs: 3, avgResponseTimeSec: 1.4
+  };
+  const funnel = dashboardData.funnel || [];
+  const channelBreakdown = dashboardData.channelBreakdown || { telegram: 72, instagram: 18, webChat: 10 };
+  const recentHotLeads = dashboardData.recentHotLeads || [];
+  const topProducts = dashboardData.topProducts || [];
 
   const formatPrice = (num) => new Intl.NumberFormat('uz-UZ').format(num || 0);
 

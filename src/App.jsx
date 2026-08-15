@@ -48,6 +48,7 @@ export default function App() {
           { stage: "Xaridga tayyor (Hot)", count: 11, percent: 30 },
           { stage: "Muvaffaqiyatli sotuv (Won)", count: 6, percent: 25 }
         ],
+        channelBreakdown: { telegram: 72, instagram: 18, webChat: 10 },
         recentHotLeads: [
           { id: "lead-1", name: "Javohir Ergashev", phone: "+998 90 987 65 43", interestProduct: "iPhone 15 Pro 256GB", score: 92, status: "hot", lastMessage: "Karta raqam bering, hozir to'lov qilaman" }
         ],
