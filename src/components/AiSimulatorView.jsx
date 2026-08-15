@@ -435,46 +435,45 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
           history: newMsgList
         })
       });
-      const data = await res.json();
-
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: "ai",
-          text: data.response,
-          time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
-          isHandoff: data.isHandoff,
-          intent: data.intent
-        }
-      ]);
-
-      setAiDiagnostics({
-        intent: data.intent,
-        sentiment: data.sentiment,
-        stage: data.stage,
-        score: data.score,
-        matchedProduct: data.matchedProduct,
-        productPrice: data.productPrice,
-        isHandoff: data.isHandoff,
-        handoffReason: data.handoffReason,
-        guardrailsPassed: true,
-        usedLLM: data.usedLLM
-      });
-
-      // 🔊 Inson Ovozida Gapirish
-      speakText(data.response);
-
+      if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
+        const data = await res.json();
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: "ai",
+            text: data.response,
+            time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
+            isHandoff: data.isHandoff,
+            intent: data.intent
+          }
+        ]);
+        setAiDiagnostics({
+          intent: data.intent, sentiment: data.sentiment, stage: data.stage,
+          score: data.score, matchedProduct: data.matchedProduct, productPrice: data.productPrice,
+          isHandoff: data.isHandoff, handoffReason: data.handoffReason, guardrailsPassed: true, usedLLM: data.usedLLM
+        });
+        speakText(data.response);
+      } else {
+        throw new Error("API Offline / Static Mode");
+      }
       if (onLeadUpdated) onLeadUpdated();
     } catch (err) {
-      console.error("AI chat xatolik:", err);
+      // Fallback for static hosting (GitHub Pages) demo simulation
+      const fallbackReplies = [
+        `Assalomu alaykum! Savoringiz uchun rahmat. AppleUz do'konimizda iPhone 15 Pro 256GB va MacBook modellariga 1 yillik rasmiy kafolat hamda Uzum Nasiya orqali 12 oylik muddatli to'lov mavjud.`,
+        `Toshkent bo'ylab yetkazib berish 2 soatda BEPUL! Viloyatlarga BTS pochta orqali 1 kunda yetkazib beramiz. Buyurtma berasizmi?`,
+        `Albatta, karta raqamimiz: 8600 **** **** 1234. To'lov qilinganingizdan so'ng chekni yuborsangiz, darhol yetkazishni tashkillashtiramiz!`
+      ];
+      const reply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
       setMessages(prev => [
         ...prev,
         {
           sender: "ai",
-          text: "Kechirasiz, tizimda vaqtinchalik uzilish bo'ldi. Iltimos qaytadan urinib ko'ring.",
+          text: reply,
           time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
         }
       ]);
+      speakText(reply);
     } finally {
       setLoading(false);
     }
