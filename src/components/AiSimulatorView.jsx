@@ -55,9 +55,61 @@ function normalizeUzbekDialect(text) {
   return res;
 }
 
+// Raqamlarni o'zbekcha so'z shakliga o'tkazish (Human Spoken Numbers)
+function numberToUzbekWords(n) {
+  if (n === 0) return 'nol';
+  const ones = ['', 'bir', 'ikki', 'uch', 'to\'rt', 'besh', 'olti', 'yetti', 'sakkiz', 'to\'qqiz'];
+  const tens = ['', 'o\'n', 'yigirma', 'o\'ttiz', 'qirq', 'ellik', 'oltmish', 'yetmish', 'sakson', 'to\'qson'];
+  if (n < 10) return ones[n];
+  if (n < 100) return (tens[Math.floor(n/10)] + ' ' + ones[n%10]).trim();
+  if (n < 1000) return ((Math.floor(n/100) === 1 ? 'yuz' : ones[Math.floor(n/100)] + ' yuz') + ' ' + (n%100 ? numberToUzbekWords(n%100) : '')).trim();
+  if (n < 1000000) return ((Math.floor(n/1000) === 1 ? 'ming' : numberToUzbekWords(Math.floor(n/1000)) + ' ming') + ' ' + (n%1000 ? numberToUzbekWords(n%1000) : '')).trim();
+  if (n < 1000000000) return (numberToUzbekWords(Math.floor(n/1000000)) + ' million ' + (n%1000000 ? numberToUzbekWords(n%1000000) : '')).trim();
+  return n.toString();
+}
+
+// Matnni insoniy jonli nutq uchun fonetik tozalash va tayyorlash
+function formatUzbekTextForHumanSpeech(text) {
+  let res = text;
+  // Raqamlarni so'z shakliga o'tkazish
+  res = res.replace(/(\d{1,3}(?:[\s,]\d{3})+|\d+)\s*(so'm|sum|UZS)?/gi, (match, numStr, currency) => {
+    const cleanNum = parseInt(numStr.replace(/[\s,]/g, ''), 10);
+    if (!isNaN(cleanNum) && cleanNum > 0 && cleanNum < 1000000000) {
+      const words = numberToUzbekWords(cleanNum);
+      return currency ? `${words} so'm` : words;
+    }
+    return match;
+  });
+
+  // Texnik so'zlar va atamalarni tabiiy talaffuzga o'tkazish
+  res = res.replace(/\b256GB\b/gi, "ikki yuz ellik olti gigabayt")
+           .replace(/\b128GB\b/gi, "yuz yigirma sakkiz gigabayt")
+           .replace(/\b512GB\b/gi, "besh yuz ellik ikki gigabayt")
+           .replace(/\b1TB\b/gi, "bir terabayt")
+           .replace(/\bPro Max\b/gi, "pro maks")
+           .replace(/\bPro\b/gi, "pro")
+           .replace(/\biPhone\b/gi, "ayfon")
+           .replace(/\bMacBook\b/gi, "makbuk")
+           .replace(/\bAir\b/gi, "eyr")
+           .replace(/\bM3\b/gi, "em uch")
+           .replace(/\bM2\b/gi, "em ikki")
+           .replace(/\bGB\b/gi, "gigabayt")
+           .replace(/\b1-kunlik\b/gi, "bir kunlik")
+           .replace(/\b2-kunlik\b/gi, "ikki kunlik")
+           .replace(/\b3-kunlik\b/gi, "uch kunlik")
+           .replace(/\b12 oyga\b/gi, "o'n ikki oyga")
+           .replace(/\b12 oylik\b/gi, "o'n ikki oylik")
+           .replace(/\b24 soatda\b/gi, "yigirma to'rt soatda")
+           .replace(/\b2 soatda\b/gi, "ikki soatda")
+           .replace(/\b1 yillik\b/gi, "bir yillik");
+
+  return res;
+}
+
 // Insondek tabiiy gapirish uchun matnni tozalash
 function cleanTextForSpeech(text) {
-  return text
+  const formatted = formatUzbekTextForHumanSpeech(text);
+  return formatted
     .replace(/[\u{1F600}-\u{1F64F}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{1F1E0}-\u{1F1FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/gu, '')
     .replace(/[*#_`~•]/g, ' ')
     .replace(/\s+/g, ' ')
