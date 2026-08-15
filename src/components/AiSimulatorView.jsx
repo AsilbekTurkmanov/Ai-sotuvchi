@@ -290,6 +290,50 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
     try {
       setIsSpeaking(true);
 
+      // 1. Pre-rendered Neural Uzbek Human Voice MP3 check (for static GitHub Pages hosting)
+      const activeVoiceKey = (selectedVoice === 'sardor' || selectedVoice === 'onyx' || selectedVoice === 'ahmet') ? 'sardor' : 'madina';
+      let audioKey = null;
+
+      if (rawText.includes("universal AI yordamchisiman") || rawText.includes("Assalomu alaykum! Men")) {
+        audioKey = `welcome_${activeVoiceKey}`;
+      } else if (rawText.includes("iPhone 15 Pro 256GB va MacBook") || rawText.includes("Savolingiz uchun rahmat")) {
+        audioKey = `reply_price_${activeVoiceKey}`;
+      } else if (rawText.includes("Toshkent bo'ylab yetkazib berish") || rawText.includes("BEPUL")) {
+        audioKey = `reply_delivery_${activeVoiceKey}`;
+      } else if (rawText.includes("Karta raqamimiz") || rawText.includes("8600")) {
+        audioKey = `reply_card_${activeVoiceKey}`;
+      }
+
+      if (audioKey) {
+        try {
+          const audioUrl = `./audio/${audioKey}.mp3`;
+          const audio = new Audio(audioUrl);
+          audio.playbackRate = speechSpeed || 0.95;
+          currentAudioRef.current = audio;
+
+          audio.onended = () => {
+            setIsSpeaking(false);
+            if (onComplete) onComplete();
+            if (continuousCallMode && recognitionRef.current) {
+              setTimeout(() => {
+                try { recognitionRef.current.start(); } catch (e) {}
+              }, 400);
+            }
+          };
+
+          audio.onerror = () => {
+            console.warn("Pre-rendered audio topilmadi, server / brauzer speech ishlatilmoqda");
+            fallbackBrowserSpeech(clean, onComplete);
+          };
+
+          await audio.play();
+          console.log(`🎙️ Pre-rendered Neural Audio: ${audioKey}.mp3 play qilindi`);
+          return;
+        } catch (e) {
+          console.warn("Audio play xatolik:", e);
+        }
+      }
+
       // Agar ovoz kloni tanlangan bo'lsa
       if (selectedVoice === "custom-clone") {
         fallbackBrowserSpeech(clean, onComplete, clonedProfile.pitch || 1.0);
