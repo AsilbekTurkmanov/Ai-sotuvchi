@@ -1,0 +1,1226 @@
+{
+  "settings": {
+    "businessName": "AppleUz Store",
+    "currency": "UZS",
+    "phone": "+998 90 123 45 67",
+    "address": "Toshkent sh., Chilonzor tumani, Bunyodkor shoh ko'chasi, 15-uy",
+    "workingHours": "Dushanba - Yakshanba: 09:00 - 21:00",
+    "deliveryInfo": "Toshkent bo'ylab 2 soatda yetkazib berish bepul. Viloyatlarga BTS pochta orqali 1 kunda (35 000 so'm).",
+    "paymentMethods": "Click, Payme, Uzum Nasiya, Naqd, Terminal",
+    "installmentInfo": "Uzum Nasiya va Anorbank orqali 3, 6, 12 oylik muddatli to'lov (boshlang'ich to'lovsiz).",
+    "warrantyInfo": "Barcha original mahsulotlarga 1 yillik rasmiy kafolat beriladi.",
+    "returnPolicy": "14 kun ichida qadoq buzilmagan bo'lsa qaytarish yoki almashtirish mumkin.",
+    "telegramBotToken": "",
+    "telegramManagerChatId": "",
+    "botActive": false,
+    "aiProvider": "builtin",
+    "aiApiKey": "",
+    "aiModel": "gpt-4o-mini",
+    "guardrails": {
+      "maxDiscountPercent": 5,
+      "allowNegotiation": true,
+      "autoHandoffOnHot": true,
+      "autoHandoffOnNegative": true,
+      "strictPriceOnly": true,
+      "systemPromptExtra": "Siz AppleUz do'konining eng professional, xushmuomala va sotuvga yo'naltirilgan AI sotuvchisisiz. Har doim o'zbek tilida tabiiy, samimiy va lo'nda javob bering. Mijoz savoliga aniq javob berib, xaridga undovchi savol bilan tugating."
+    }
+  },
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "iPhone 15 Pro 256GB",
+      "category": "Smartfonlar",
+      "price": 12500000,
+      "oldPrice": 13200000,
+      "colors": [
+        "Black Titanium",
+        "Natural Titanium",
+        "Blue Titanium",
+        "White Titanium"
+      ],
+      "stock": 14,
+      "installmentMonthly": 1250000,
+      "description": "A17 Pro chip, Titanium korpus, 48MP asosiy kamera, Action button, USB-C 3.0.",
+      "features": "Ekran: 6.1\" Super Retina XDR OLED 120Hz, Batareya: 3274 mAh, Kafolat: 1 yil.",
+      "imageUrl": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80",
+      "active": true
+    },
+    {
+      "id": "prod-2",
+      "name": "iPhone 15 Pro Max 256GB",
+      "category": "Smartfonlar",
+      "price": 14200000,
+      "oldPrice": 14900000,
+      "colors": [
+        "Natural Titanium",
+        "Black Titanium",
+        "White Titanium"
+      ],
+      "stock": 8,
+      "installmentMonthly": 1420000,
+      "description": "6.7 dyuymli ulkan ekran, 5x optik zoom, titan korpus, eng kuchli batareya.",
+      "features": "Ekran: 6.7\" 120Hz, A17 Pro, 5x Telephoto kamera, Batareya: 4422 mAh.",
+      "imageUrl": "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&auto=format&fit=crop&q=80",
+      "active": true
+    },
+    {
+      "id": "prod-3",
+      "name": "MacBook Air M2 13.6\" 8/256GB",
+      "category": "Noutbuklar",
+      "price": 11800000,
+      "oldPrice": 12500000,
+      "colors": [
+        "Midnight",
+        "Space Gray",
+        "Starlight",
+        "Silver"
+      ],
+      "stock": 5,
+      "installmentMonthly": 1180000,
+      "description": "Ultra yupqa dizayn, Apple M2 chip, 18 soatgacha batareya, jim ventilyatorsiz tizim.",
+      "features": "13.6\" Liquid Retina, M2 8-core CPU, MagSafe zaryadlash, Og'irligi: 1.24 kg.",
+      "imageUrl": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
+      "active": true
+    },
+    {
+      "id": "prod-4",
+      "name": "AirPods Pro 2 (USB-C)",
+      "category": "Aksessuarlar",
+      "price": 2450000,
+      "oldPrice": 2800000,
+      "colors": [
+        "White"
+      ],
+      "stock": 22,
+      "installmentMonthly": 245000,
+      "description": "2 barobar kuchliroq faol shovqin bekor qilish (ANC), Moslashuvchan audio, USB-C keys.",
+      "features": "H2 chip, 6 soat batareya (keys bilan 30 soat), Suv va changdan himoya IP54.",
+      "imageUrl": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&auto=format&fit=crop&q=80",
+      "active": true
+    },
+    {
+      "id": "prod-5",
+      "name": "Apple Watch Series 9 45mm GPS",
+      "category": "Aqlli soatlar",
+      "price": 4600000,
+      "oldPrice": 4900000,
+      "colors": [
+        "Midnight",
+        "Starlight",
+        "Silver",
+        "(PRODUCT)RED"
+      ],
+      "stock": 9,
+      "installmentMonthly": 460000,
+      "description": "S9 SiP chip, Double Tap yangi imo-ishora boshqaruvi, 2000 nit yorqin ekran.",
+      "features": "Yurak urishi, EKG, Qon kislorodi, Uyqu monitoringi, 18 soat ishlash.",
+      "imageUrl": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600&auto=format&fit=crop&q=80",
+      "active": true
+    }
+  ],
+  "faq": [
+    {
+      "id": "faq-1",
+      "question": "Mahsulotlar originalmi va kafolat bormi?",
+      "answer": "Ha, biz faqat 100% original, yangi va muhrlangan (sealed) Apple mahsulotlarini sotamiz. Barcha qurilmalarga 1 yillik rasmiy kafolat beriladi."
+    },
+    {
+      "id": "faq-2",
+      "question": "Yetkazib berish xizmati qanday ishlaydi?",
+      "answer": "Toshkent shahri bo'ylab buyurtma berilganidan keyin 2 soat ichida mutlaqo bepul yetkazib beramiz. O'zbekistonning barcha viloyatlariga esa BTS pochta orqali 1 ish kunida yetkaziladi."
+    },
+    {
+      "id": "faq-3",
+      "question": "Bo'lib to'lash (nasiya) shartlari qanday?",
+      "answer": "Uzum Nasiya va Anorbank orqali 3 oydan 12 oygacha boshlang'ich to'lovsiz bo'lib to'lash mumkin. Buning uchun faqat pasport va plastik karta talab qilinadi."
+    },
+    {
+      "id": "faq-4",
+      "question": "Eski telefonimni Trade-In qilsam bo'ladimi?",
+      "answer": "Albatta! Do'konimizda Trade-In xizmati mavjud. Eski iPhone telefoningizni olib kelsangiz, mutaxassisimiz narxlab beradi va farqini to'lab yangisiga almashtirishingiz mumkin."
+    }
+  ],
+  "leads": [
+    {
+      "id": "sim-1786814132468",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Awareness",
+      "intent": "greeting",
+      "lastMessageTime": "22:15",
+      "lastMessage": "salom",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 17:15",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786813996601",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Awareness",
+      "intent": "greeting",
+      "lastMessageTime": "22:13",
+      "lastMessage": "salom",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 17:13",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786812723861",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "21:53",
+      "lastMessage": "tilayman tabriklayman",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 16:53",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786801629009",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "interested",
+      "score": 65,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Consideration",
+      "intent": "installment_inquiry",
+      "lastMessageTime": "18:48",
+      "lastMessage": "Uzum Nasiya orqali bo'lib to'lasa bo'ladimi, oyiga qancha?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:48",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786801590225",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:46",
+      "lastMessage": "kurslar haqida ma'lumot ber",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:46",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786801339937",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:42",
+      "lastMessage": "kurslar haqida ma'lumot ber",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:42",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786801054936",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:37",
+      "lastMessage": "islom aleykum menga kurslar bo'yicha ma'lumot ber",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:37",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786801023050",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Awareness",
+      "intent": "greeting",
+      "lastMessageTime": "18:37",
+      "lastMessage": "assalomu alaykum akajon",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:37",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786800819945",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 50,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "price_inquiry",
+      "lastMessageTime": "18:34",
+      "lastMessage": "ey menga narxlari va tushirib bermaysizlar",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:34",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800799637",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "interested",
+      "score": 60,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Consideration",
+      "intent": "discount_inquiry",
+      "lastMessageTime": "18:33",
+      "lastMessage": "Aka tushib berin, 12 mlnga ob ketaman, yetkazib berilarmi?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:33",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800458433",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "hot",
+      "score": 95,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "positive",
+      "stage": "Purchase",
+      "intent": "purchase_ready",
+      "lastMessageTime": "18:27",
+      "lastMessage": "Karta raqam bering, hozir tolov qilib olaman!",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:27",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800446850",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 50,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "price_inquiry",
+      "lastMessageTime": "18:27",
+      "lastMessage": "iPhone 15 Pro narxi qancha?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:27",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800436244",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:27",
+      "lastMessage": "Biznesni rivojlantirish va sotuvlarni oshirish bo'yicha maslahat bering",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:27",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800428389",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:27",
+      "lastMessage": "iPhone 15 Pro va Pro Max farqi nima, qaysi birini tanlay?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:27",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786800417536",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "",
+      "productPrice": 0,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_knowledge",
+      "lastMessageTime": "18:26",
+      "lastMessage": "Dasturlash uchun eng yaxshi yo'nalishlar qaysi?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:26",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786799263972",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_inquiry",
+      "lastMessageTime": "18:07",
+      "lastMessage": "Dasturlash uchun eng yaxshi yo'nalishlar qaysi?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:07",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786799193581",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_inquiry",
+      "lastMessageTime": "18:06",
+      "lastMessage": "IT sohasida eng yaxshi kasblar qaysilar?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:06",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786799181107",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 40,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "general_inquiry",
+      "lastMessageTime": "18:06",
+      "lastMessage": "iPhone 15 Pro va Pro Max farqi nima, qaysi biri yaxshi?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:06",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786798992020",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "hot",
+      "score": 90,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Consideration",
+      "intent": "manager_request",
+      "lastMessageTime": "18:03",
+      "lastMessage": "Menga odam sotuvchi bilan gaplashish kerak, ulab bering.",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 13:03",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "sim-1786798502752",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "hot",
+      "score": 95,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "positive",
+      "stage": "Purchase",
+      "intent": "purchase_ready",
+      "lastMessageTime": "17:55",
+      "lastMessage": "Karta raqam bering, hozir to'lov qilib Toshkentga dostavka qildiraman!",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 12:55",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786798456232",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "hot",
+      "score": 95,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "positive",
+      "stage": "Purchase",
+      "intent": "purchase_ready",
+      "lastMessageTime": "17:54",
+      "lastMessage": "Karta raqam bering, hozir tolov qilib olaman!",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 12:54",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-sim-1786798450820",
+      "name": "Jonli Sinovchi (Mijoz)",
+      "phone": "+998 90 000 00 00",
+      "username": "@test_user",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 50,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "price_inquiry",
+      "lastMessageTime": "17:54",
+      "lastMessage": "iPhone 15 Pro narxi qancha?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 12:54",
+      "notes": "Simulyatordan yaratildi"
+    },
+    {
+      "id": "lead-1",
+      "name": "Jasur Rahimov",
+      "phone": "+998 93 456 78 90",
+      "username": "@jasur_r",
+      "channel": "Telegram",
+      "status": "hot",
+      "score": 95,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "positive",
+      "stage": "Purchase",
+      "intent": "purchase_ready",
+      "lastMessageTime": "17:54",
+      "lastMessage": "[Follow-up]: Salom! Kecha iPhone 15 Pro 256...",
+      "unread": false,
+      "followUpStatus": "completed",
+      "createdAt": "2026-08-15 15:30",
+      "notes": "Natural Titanium rangini tanladi. To'lovni Click orqali qilmoqchi."
+    },
+    {
+      "id": "lead-2",
+      "name": "Malika Karimova",
+      "phone": "+998 90 876 54 32",
+      "username": "@malika_k",
+      "channel": "Instagram",
+      "status": "interested",
+      "score": 72,
+      "interestProduct": "MacBook Air M2",
+      "productPrice": 11800000,
+      "assignedManager": "Nodira Karimova",
+      "sentiment": "neutral",
+      "stage": "Consideration",
+      "intent": "installment_inquiry",
+      "lastMessageTime": "16:20",
+      "lastMessage": "Uzum Nasiya orqali 12 oyga oyiga qanchadan tushadi?",
+      "unread": false,
+      "followUpStatus": "scheduled",
+      "createdAt": "2026-08-15 14:10",
+      "notes": "Dasturlash uchun olmoqchi, Midnight rangi qiziqtiryapti."
+    },
+    {
+      "id": "lead-3",
+      "name": "Sardor Azimov",
+      "phone": "+998 97 111 22 33",
+      "username": "@sardor_dev",
+      "channel": "Telegram",
+      "status": "contacted",
+      "score": 45,
+      "interestProduct": "AirPods Pro 2",
+      "productPrice": 2450000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "neutral",
+      "stage": "Interest",
+      "intent": "price_inquiry",
+      "lastMessageTime": "14:05",
+      "lastMessage": "AirPods Pro 2 narxi qancha hozir aksiya bormi?",
+      "unread": false,
+      "followUpStatus": "pending",
+      "createdAt": "2026-08-15 12:00",
+      "notes": ""
+    },
+    {
+      "id": "lead-4",
+      "name": "Bobur Mirzayev",
+      "phone": "+998 91 999 88 77",
+      "username": "@bobur_m",
+      "channel": "Telegram",
+      "status": "won",
+      "score": 100,
+      "interestProduct": "iPhone 15 Pro Max 256GB",
+      "productPrice": 14200000,
+      "assignedManager": "Ali Valiyev",
+      "sentiment": "positive",
+      "stage": "Closed",
+      "intent": "payment_done",
+      "lastMessageTime": "11:30",
+      "lastMessage": "To'lov o'tdi, kuryerni kutyapman. Rahmat!",
+      "unread": false,
+      "followUpStatus": "none",
+      "createdAt": "2026-08-15 09:15",
+      "notes": "Sotuv muvaffaqiyatli yakunlandi. Kuryer jo'natildi."
+    },
+    {
+      "id": "lead-5",
+      "name": "Dilshod Olimov",
+      "phone": "+998 94 333 44 55",
+      "username": "@dilshod_o",
+      "channel": "WhatsApp",
+      "status": "new",
+      "score": 30,
+      "interestProduct": "Apple Watch Series 9",
+      "productPrice": 4600000,
+      "assignedManager": "Taqsimlanmagan",
+      "sentiment": "neutral",
+      "stage": "Awareness",
+      "intent": "general_inquiry",
+      "lastMessageTime": "17:10",
+      "lastMessage": "Assalomu alaykum, soatlar bormi?",
+      "unread": true,
+      "followUpStatus": "none",
+      "createdAt": "2026-08-15 17:10",
+      "notes": ""
+    },
+    {
+      "id": "lead-6",
+      "name": "Shahnoza Yuldasheva",
+      "phone": "+998 99 555 66 77",
+      "username": "@shahnoza_yu",
+      "channel": "Instagram",
+      "status": "lost",
+      "score": 15,
+      "interestProduct": "iPhone 15 Pro 256GB",
+      "productPrice": 12500000,
+      "assignedManager": "Nodira Karimova",
+      "sentiment": "negative",
+      "stage": "Lost",
+      "intent": "price_complaint",
+      "lastMessageTime": "Kecha 18:00",
+      "lastMessage": "Boshqa joyda 12 mlnga ko'rdim, sizda qimmat ekan.",
+      "unread": false,
+      "followUpStatus": "cancelled",
+      "createdAt": "2026-08-14 16:30",
+      "notes": "Narx qimmatligini aytdi, qiziqish yo'qoldi."
+    }
+  ],
+  "conversations": {
+    "lead-1": [
+      {
+        "sender": "customer",
+        "text": "Assalomu alaykum! iPhone 15 Pro 256GB bormi?",
+        "time": "17:35",
+        "intent": "stock_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Vaalaykum assalom! Ha, iPhone 15 Pro 256GB hozirda sotuvda mavjud. Narxi 12 500 000 so'm (aksiyada). Bizda Black Titanium va Natural Titanium ranglari bor. Sizga qaysi rang ko'proq ma'qul?",
+        "time": "17:35"
+      },
+      {
+        "sender": "customer",
+        "text": "Natural Titanium zo'r ekan. Toshkent ichida yetkazib berish bormi?",
+        "time": "17:37",
+        "intent": "delivery_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Albatta! Toshkent shahri bo'ylab buyurtma berilganidan so'ng 2 soat ichida bepul yetkazib beramiz. 1 yillik rasmiy kafolat va original chek beriladi.",
+        "time": "17:37"
+      },
+      {
+        "sender": "customer",
+        "text": "Karta raqam bering, hozir to'lov qilib Toshkent bo'yicha dostavka qildiraman.",
+        "time": "17:42",
+        "intent": "purchase_ready"
+      },
+      {
+        "sender": "ai",
+        "text": "Ajoyib tanlov! Siz uchun Natural Titanium 256GB modelini zaxiraga oldik. Hozir sizga to'lov rekvizitlarini jo'natish va yetkazish manzilini aniqlashtirish uchun katta sotuv menejerimiz Ali Valiyev (@ali_sales) bog'lanadi. 1 daqiqa kuting!",
+        "time": "17:42",
+        "isHandoff": true
+      },
+      {
+        "sender": "ai",
+        "text": "[Avtomatik Follow-up]: Salom! Kecha iPhone 15 Pro 256GB haqida ma'lumot so'ragandingiz. Mahsulotimiz siz uchun qiziqmi? Hozirda zaxirada sanoqli qoldi, sizga bir dona ajratib qo'yaylikmi? 😊",
+        "time": "17:54"
+      }
+    ],
+    "lead-sim-1786798450820": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro narxi qancha?",
+        "time": "17:54",
+        "intent": "price_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! iPhone 15 Pro 256GB narxi 12 500 000 UZS. Hozirda aksiya doirasida quyidagi ranglari mavjud: Black Titanium, Natural Titanium, Blue Titanium, White Titanium.\n\nToshkent bo'ylab yetkazib berish mutlaqo bepul! Sizga qaysi rang ko'proq yoqadi?",
+        "time": "17:54",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786798456232": [
+      {
+        "sender": "customer",
+        "text": "Karta raqam bering, hozir tolov qilib olaman!",
+        "time": "17:54",
+        "intent": "purchase_ready"
+      },
+      {
+        "sender": "ai",
+        "text": "Ajoyib qaror! Siz uchun iPhone 15 Pro 256GB modelini zaxiraga olib qo'ydik. 🎁\n\nTo'lov rekvizitlarini jo'natish va yetkazib berish manzilini aniqlashtirish uchun hozir katta sotuv menejerimiz (@ali_sales / +998 90 123 45 67) sizga to'g'ridan-to'g'ri bog'lanadi. 1 daqiqa kuting!",
+        "time": "17:54",
+        "isHandoff": true
+      }
+    ],
+    "sim-1786798502752": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro 256GB narxi qancha hozir?",
+        "time": "17:55",
+        "intent": "price_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! iPhone 15 Pro 256GB narxi 12 500 000 UZS. Hozirda aksiya doirasida quyidagi ranglari mavjud: Black Titanium, Natural Titanium, Blue Titanium, White Titanium.\n\nToshkent bo'ylab yetkazib berish mutlaqo bepul! Sizga qaysi rang ko'proq yoqadi?",
+        "time": "17:55",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "Karta raqam bering, hozir to'lov qilib Toshkentga dostavka qildiraman!",
+        "time": "17:55",
+        "intent": "purchase_ready"
+      },
+      {
+        "sender": "ai",
+        "text": "Ajoyib qaror! Siz uchun iPhone 15 Pro 256GB modelini zaxiraga olib qo'ydik. 🎁\n\nTo'lov rekvizitlarini jo'natish va yetkazib berish manzilini aniqlashtirish uchun hozir katta sotuv menejerimiz (@ali_sales / +998 90 123 45 67) sizga to'g'ridan-to'g'ri bog'lanadi. 1 daqiqa kuting!",
+        "time": "17:55",
+        "isHandoff": true
+      }
+    ],
+    "sim-1786798992020": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro 256GB narxi qancha hozir?",
+        "time": "18:03",
+        "intent": "price_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! iPhone 15 Pro 256GB narxi 12 500 000 UZS. Hozirda aksiya doirasida quyidagi ranglari mavjud: Black Titanium, Natural Titanium, Blue Titanium, White Titanium.\n\nToshkent bo'ylab yetkazib berish mutlaqo bepul! Sizga qaysi rang ko'proq yoqadi?",
+        "time": "18:03",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "Uzum Nasiya orqali bo'lib to'lasa bo'ladimi, oyiga qancha?",
+        "time": "18:03",
+        "intent": "installment_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Ha, albatta! iPhone 15 Pro 256GB uchun Uzum Nasiya va Anorbank orqali boshlang'ich to'lovsiz, 12 oyga oyiga bor-yo'g'i 1 250 000 UZSdan bo'lib to'lashingiz mumkin.\n\nRasmiylashtirish uchun faqat pasport va plastik karta kifoya. Sizga bo'lib to'lashni rasmiylashtirishga yordam beraylikmi?",
+        "time": "18:03",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "Skidka bormi? 12 millionga berib yuborasizmi?",
+        "time": "18:03",
+        "intent": "discount_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Bizda narxlar allaqachon eng maqbul ulgurji narxlarda belgilangan. Lekin siz uchun maxsus 5% chegirma bilan 11 875 000 UZSga rasmiylashtirib berishimiz mumkin! + Sovg'asiga 20W adapter qo'shib beramiz. Buyurtma qilasizmi?",
+        "time": "18:03",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "Menga odam sotuvchi bilan gaplashish kerak, ulab bering.",
+        "time": "18:03",
+        "intent": "manager_request"
+      },
+      {
+        "sender": "ai",
+        "text": "Albatta! Sizni tajribali sotuv menejerimizga ulayapman. Menejerimiz tez orada ushbu chatda sizga javob yozadi yoki telefon orqali aloqaga chiqadi.",
+        "time": "18:03",
+        "isHandoff": true
+      }
+    ],
+    "lead-sim-1786799181107": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro va Pro Max farqi nima, qaysi biri yaxshi?",
+        "time": "18:06",
+        "intent": "general_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "iPhone 15 Pro 256GB haqida: A17 Pro chip, Titanium korpus, 48MP asosiy kamera, Action button, USB-C 3.0. Narxi: 12 500 000 UZS. Toshkent bo'yicha yetkazib berish bepul!\n\nQo'shimcha savollaringiz bormi yoki buyurtmani rasmiylashtiramizmi?",
+        "time": "18:06",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786799193581": [
+      {
+        "sender": "customer",
+        "text": "IT sohasida eng yaxshi kasblar qaysilar?",
+        "time": "18:06",
+        "intent": "general_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "iPhone 15 Pro 256GB haqida: A17 Pro chip, Titanium korpus, 48MP asosiy kamera, Action button, USB-C 3.0. Narxi: 12 500 000 UZS. Toshkent bo'yicha yetkazib berish bepul!\n\nQo'shimcha savollaringiz bormi yoki buyurtmani rasmiylashtiramizmi?",
+        "time": "18:06",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786799263972": [
+      {
+        "sender": "customer",
+        "text": "Dasturlash uchun eng yaxshi yo'nalishlar qaysi?",
+        "time": "18:07",
+        "intent": "general_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "iPhone 15 Pro 256GB haqida: A17 Pro chip, Titanium korpus, 48MP asosiy kamera, Action button, USB-C 3.0. Narxi: 12 500 000 UZS. Toshkent bo'yicha yetkazib berish bepul!\n\nQo'shimcha savollaringiz bormi yoki buyurtmani rasmiylashtiramizmi?",
+        "time": "18:07",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786800417536": [
+      {
+        "sender": "customer",
+        "text": "Dasturlash uchun eng yaxshi yo'nalishlar qaysi?",
+        "time": "18:26",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "IT va zamonaviy texnologiyalar sohasida bugungi kunda eng talabgir yo'nalishlar:\n1. Sun'iy Intellekt va Machine Learning (AI Engineering)\n2. Web va Mobile Dasturlash (Full-Stack, Flutter, React)\n3. Kiberxavfsizlik va DevOps\n4. Data Analytics va Biznes Tahlil\n\nDasturlash va IT ishlari uchun eng qulay noutbuk bu shubhasiz Apple MacBook Air / Pro (M2/M3 chip). Do'konimizda ushbu modellarni eng qulay bo'lib to'lash shartlari bilan xarid qilishingiz mumkin! Qiziqasizmi?",
+        "time": "18:26",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786800428389": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro va Pro Max farqi nima, qaysi birini tanlay?",
+        "time": "18:27",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Juda o'rinli savol! Tanlov qilishda sizning asosiy ehtiyojingiz muhim:\n• Agar sizga ixchamlik, qulaylik va eng so'nggi titan dizayn kerak bo'lsa — iPhone 15 Pro (6.1 dyuym) ajoyib.\n• Agar katta ekran, kuchli 5x optik zoom va eng uzoq ishlovchi batareya kerak bo'lsa — iPhone 15 Pro Max (6.7 dyuym) tavsiya etiladi.\n• Dasturlash, dizayn yoki ofis ishlari uchun esa jim va yengil MacBook Air M2 eng maqbul variant.\n\nSiz ushbu qurilmadan ko'proq qaysi maqsadda foydalanmoqchisiz?",
+        "time": "18:27",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786800436244": [
+      {
+        "sender": "customer",
+        "text": "Biznesni rivojlantirish va sotuvlarni oshirish bo'yicha maslahat bering",
+        "time": "18:27",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Mamnuniyat bilan maslahat beraman! To'g'ri qurilma tanlash uchun quyidagilarga e'tibor bering:\n1. Byudjet va to'lov usuli (Naqd yoki Uzum Nasiya orqali bo'lib to'lash)\n2. Asosiy maqsad: Suratga olish, o'yinlar, kundalik ishlar yoki biznes\n3. Xotira hajmi: Kamida 256GB tavsiya etiladi (video va ilovalar uchun yetarli)\n\nSizni aynan qaysi toifadagi qurilma ko'proq qiziqtiryapti?",
+        "time": "18:27",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786800446850": [
+      {
+        "sender": "customer",
+        "text": "iPhone 15 Pro narxi qancha?",
+        "time": "18:27",
+        "intent": "price_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! iPhone 15 Pro 256GB narxi 12 500 000 UZS. Hozirda aksiya doirasida quyidagi ranglari mavjud: Black Titanium, Natural Titanium, Blue Titanium, White Titanium.\n\nToshkent bo'ylab yetkazib berish mutlaqo bepul! Sizga qaysi rang ko'proq yoqadi?",
+        "time": "18:27",
+        "isHandoff": false
+      }
+    ],
+    "lead-sim-1786800458433": [
+      {
+        "sender": "customer",
+        "text": "Karta raqam bering, hozir tolov qilib olaman!",
+        "time": "18:27",
+        "intent": "purchase_ready"
+      },
+      {
+        "sender": "ai",
+        "text": "Ajoyib qaror! Siz uchun tanlangan mahsulot modelini zaxiraga olib qo'ydik. 🎁\n\nTo'lov rekvizitlarini jo'natish va yetkazib berish manzilini aniqlashtirish uchun hozir katta sotuv menejerimiz (@ali_sales / +998 90 123 45 67) sizga to'g'ridan-to'g'ri bog'lanadi. 1 daqiqa kuting!",
+        "time": "18:27",
+        "isHandoff": true
+      }
+    ],
+    "lead-sim-1786800799637": [
+      {
+        "sender": "customer",
+        "text": "Aka tushib berin, 12 mlnga ob ketaman, yetkazib berilarmi?",
+        "time": "18:33",
+        "intent": "discount_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Mijozlarimiz uchun bugun maxsus aksiyalarimiz va sovg'alarimiz mavjud! Qaysi mahsulotni tanlasangiz, sizga eng qulay shartlarni taqdim etamiz.",
+        "time": "18:33",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786800819945": [
+      {
+        "sender": "customer",
+        "text": "assalomalekum",
+        "time": "18:34",
+        "intent": "greeting"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! AppleUz Store universal AI maslahatchisi va sotuvchisiman. Sizga bugun qanday savol, texnologik maslahat yoki mahsulot tanlashda yordam berishim mumkin?",
+        "time": "18:34",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "ey menga narxlari va tushirib bermaysizlar",
+        "time": "18:34",
+        "intent": "price_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! Bizda barcha ommabop Apple mahsulotlari eng maqbul narxlarda mavjud. Aynan qaysi model narxi bilan qiziqyapsiz?",
+        "time": "18:34",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786801023050": [
+      {
+        "sender": "customer",
+        "text": "assalomu alaykum akajon",
+        "time": "18:37",
+        "intent": "greeting"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! AppleUz Store universal AI maslahatchisi va sotuvchisiman. Sizga bugun qanday savol, texnologik maslahat yoki mahsulot tanlashda yordam berishim mumkin?",
+        "time": "18:37",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786801054936": [
+      {
+        "sender": "customer",
+        "text": "islom aleykum menga kurslar bo'yicha ma'lumot ber",
+        "time": "18:37",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Savolingiz uchun tashakkur! Men universal AI agent sifatida har qanday mavzudagi savollarga (texnologiya, dasturlash, biznes, solishtirish, maslahatlar) to'liq javob bera olaman.\n\nShuningdek, do'konimiz mahsulotlari (smartfon, noutbuk, aksessuarlar), bo'lib to'lash yoki yetkazib berish bo'yicha ham yordam berishim mumkin. Sizga qanday qo'shimcha ma'lumot kerak? 😊",
+        "time": "18:37",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786801339937": [
+      {
+        "sender": "customer",
+        "text": "kurslar haqida ma'lumot ber",
+        "time": "18:42",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Savolingiz uchun tashakkur! Men universal AI agent sifatida har qanday mavzudagi savollarga (texnologiya, dasturlash, biznes, solishtirish, maslahatlar) to'liq javob bera olaman.\n\nShuningdek, do'konimiz mahsulotlari (smartfon, noutbuk, aksessuarlar), bo'lib to'lash yoki yetkazib berish bo'yicha ham yordam berishim mumkin. Sizga qanday qo'shimcha ma'lumot kerak? 😊",
+        "time": "18:42",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786801590225": [
+      {
+        "sender": "customer",
+        "text": "kurslar haqida ma'lumot ber",
+        "time": "18:46",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Savolingiz uchun tashakkur! Men universal AI agent sifatida har qanday mavzudagi savollarga (texnologiya, dasturlash, biznes, solishtirish, maslahatlar) to'liq javob bera olaman.\n\nShuningdek, do'konimiz mahsulotlari (smartfon, noutbuk, aksessuarlar), bo'lib to'lash yoki yetkazib berish bo'yicha ham yordam berishim mumkin. Sizga qanday qo'shimcha ma'lumot kerak? 😊",
+        "time": "18:46",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786801629009": [
+      {
+        "sender": "customer",
+        "text": "Uzum Nasiya orqali bo'lib to'lasa bo'ladimi, oyiga qancha?",
+        "time": "18:48",
+        "intent": "installment_inquiry"
+      },
+      {
+        "sender": "ai",
+        "text": "Bizda barcha mahsulotlarni Uzum Nasiya va Anorbank orqali boshlang'ich to'lovsiz 3, 6 yoki 12 oyga qulay bo'lib to'lashga xarid qilishingiz mumkin. Qaysi mahsulotni tanlamoqchisiz?",
+        "time": "18:48",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786812723861": [
+      {
+        "sender": "customer",
+        "text": "tilayman tabriklayman",
+        "time": "21:53",
+        "intent": "general_knowledge"
+      },
+      {
+        "sender": "ai",
+        "text": "Savolingiz uchun tashakkur! Men universal AI agent sifatida har qanday mavzudagi savollarga (texnologiya, dasturlash, biznes, solishtirish, maslahatlar) to'liq javob bera olaman.\n\nShuningdek, do'konimiz mahsulotlari (smartfon, noutbuk, aksessuarlar), bo'lib to'lash yoki yetkazib berish bo'yicha ham yordam berishim mumkin. Sizga qanday qo'shimcha ma'lumot kerak? 😊",
+        "time": "21:53",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786813996601": [
+      {
+        "sender": "customer",
+        "text": "salom",
+        "time": "22:13",
+        "intent": "greeting"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! AppleUz Store universal AI maslahatchisi va sotuvchisiman. Sizga bugun qanday savol, texnologik maslahat yoki mahsulot tanlashda yordam berishim mumkin?",
+        "time": "22:13",
+        "isHandoff": false
+      }
+    ],
+    "sim-1786814132468": [
+      {
+        "sender": "customer",
+        "text": "salom",
+        "time": "22:15",
+        "intent": "greeting"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! AppleUz Store universal AI maslahatchisi va sotuvchisiman. Sizga bugun qanday savol, texnologik maslahat yoki mahsulot tanlashda yordam berishim mumkin?",
+        "time": "22:15",
+        "isHandoff": false
+      },
+      {
+        "sender": "customer",
+        "text": "salom",
+        "time": "22:15",
+        "intent": "greeting"
+      },
+      {
+        "sender": "ai",
+        "text": "Assalomu alaykum! AppleUz Store universal AI maslahatchisi va sotuvchisiman. Sizga bugun qanday savol, texnologik maslahat yoki mahsulot tanlashda yordam berishim mumkin?",
+        "time": "22:15",
+        "isHandoff": false
+      }
+    ]
+  },
+  "followUpTemplates": [
+    {
+      "id": "fu-1",
+      "name": "1-kun: Yumshoq eslatma (Soft reminder)",
+      "delayHours": 24,
+      "channel": "all",
+      "condition": "narx so'ragan, ammo 24 soat javob bermagan mijozlar",
+      "text": "Salom! Kecha {product_name} haqida ma'lumot so'ragandingiz. Mahsulotimiz siz uchun qiziqmi? Hozirda zaxirada sanoqli qoldi, sizga bir dona ajratib qo'yaylikmi? 😊",
+      "active": true
+    },
+    {
+      "id": "fu-2",
+      "name": "2-kun: Bo'lib to'lash va Afzallik taklifi",
+      "delayHours": 48,
+      "channel": "all",
+      "condition": "hali ham javob bermagan mijozlar",
+      "text": "Assalomu alaykum! {product_name} xaridi haqida o'ylab ko'rdingizmi? Agar naqd to'lash noqulay bo'lsa, Uzum Nasiya orqali boshlang'ich to'lovsiz, oyiga {installment_price} so'mdan 12 oyga bo'lib to'lash imkoniyati bor. Rasmiylashtirishga yordam beraylikmi?",
+      "active": true
+    },
+    {
+      "id": "fu-3",
+      "name": "3-kun: Maxsus sovg'a yoki Chegirma taklifi",
+      "delayHours": 72,
+      "channel": "all",
+      "condition": "so'nggi imkoniyat follow-up",
+      "text": "Salom! Bugun {product_name} xarid qilsangiz, do'konimizdan sovg'a sifatida original 20W tezkor zaryadlash adapteri va himoya oynasini bepul qo'shib beramiz! Buyurtmani tasdiqlaymizmi? 🎁",
+      "active": true
+    }
+  ],
+  "analytics": {
+    "todayLeads": 48,
+    "todayAiHandled": 73,
+    "todayHandoffs": 14,
+    "todaySalesCount": 8,
+    "todayRevenue": 84500000,
+    "conversionRate": 16.6,
+    "avgResponseTimeSec": 1.2,
+    "channelBreakdown": {
+      "telegram": 62,
+      "instagram": 28,
+      "whatsapp": 10
+    },
+    "funnel": [
+      {
+        "stage": "Yozgan mijozlar",
+        "count": 240,
+        "percent": 100
+      },
+      {
+        "stage": "AI bilan muloqot",
+        "count": 228,
+        "percent": 95
+      },
+      {
+        "stage": "Qiziqish bildirgan (Warm)",
+        "count": 96,
+        "percent": 40
+      },
+      {
+        "stage": "Xaridga tayyor (Hot)",
+        "count": 38,
+        "percent": 15.8
+      },
+      {
+        "stage": "Sotuv yakunlandi (Won)",
+        "count": 21,
+        "percent": 8.75
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "ai-sotuvchi",
+  "version": "1.0.0",
+  "homepage": "https://asilbekturkmanov.github.io/Ai-sotuvchi/",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "concurrently \"node backend/server.js\" \"vite\"",
+    "server": "node backend/server.js",
+    "client": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "chart.js": "^4.5.1",
+    "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "edge-tts": "^1.0.1",
+    "express": "^5.2.1",
+    "lucide-react": "^1.31.0",
+    "msedge-tts": "^2.0.7",
+    "react": "^19.2.8",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0",
+    "telegraf": "^4.16.3",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@vitejs/plugin-react": "^6.0.5",
+    "autoprefixer": "^10.5.4",
+    "concurrently": "^9.2.4",
+    "gh-pages": "^6.3.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.1"
+  }
+}
