@@ -81,7 +81,9 @@ function numberToUzbekWords(n) {
 
 // Matnni insoniy jonli nutq uchun fonetik tozalash va tayyorlash
 function formatUzbekTextForHumanSpeech(text) {
+  if (!text) return "";
   let res = text;
+  
   // Raqamlarni so'z shakliga o'tkazish
   res = res.replace(/(\d{1,3}(?:[\s,]\d{3})+|\d+)\s*(so'm|sum|UZS)?/gi, (match, numStr, currency) => {
     const cleanNum = parseInt(numStr.replace(/[\s,]/g, ''), 10);
@@ -93,36 +95,51 @@ function formatUzbekTextForHumanSpeech(text) {
   });
 
   // Texnik so'zlar va atamalarni tabiiy talaffuzga o'tkazish
-  res = res.replace(/\b256GB\b/gi, "ikki yuz ellik olti gigabayt")
-           .replace(/\b128GB\b/gi, "yuz yigirma sakkiz gigabayt")
-           .replace(/\b512GB\b/gi, "besh yuz ellik ikki gigabayt")
-           .replace(/\b1TB\b/gi, "bir terabayt")
-           .replace(/\bPro Max\b/gi, "pro maks")
-           .replace(/\bPro\b/gi, "pro")
-           .replace(/\biPhone\b/gi, "ayfon")
-           .replace(/\bMacBook\b/gi, "makbuk")
-           .replace(/\bAir\b/gi, "eyr")
-           .replace(/\bM3\b/gi, "em uch")
-           .replace(/\bM2\b/gi, "em ikki")
-           .replace(/\bGB\b/gi, "gigabayt")
-           .replace(/\b1-kunlik\b/gi, "bir kunlik")
-           .replace(/\b2-kunlik\b/gi, "ikki kunlik")
-           .replace(/\b3-kunlik\b/gi, "uch kunlik")
-           .replace(/\b12 oyga\b/gi, "o'n ikki oyga")
-           .replace(/\b12 oylik\b/gi, "o'n ikki oylik")
-           .replace(/\b24 soatda\b/gi, "yigirma to'rt soatda")
-           .replace(/\b2 soatda\b/gi, "ikki soatda")
-           .replace(/\b1 yillik\b/gi, "bir yillik");
+  res = res
+    .replace(/\b256GB\b/gi, "ikki yuz ellik olti gigabayt")
+    .replace(/\b128GB\b/gi, "yuz yigirma sakkiz gigabayt")
+    .replace(/\b512GB\b/gi, "besh yuz ellik ikki gigabayt")
+    .replace(/\b1TB\b/gi, "bir terabayt")
+    .replace(/\bPro Max\b/gi, "pro maks")
+    .replace(/\bPro\b/gi, "pro")
+    .replace(/\biPhone\b/gi, "ayfon")
+    .replace(/\bMacBook\b/gi, "makbuk")
+    .replace(/\bAir\b/gi, "eyr")
+    .replace(/\bM3\b/gi, "em uch")
+    .replace(/\bM2\b/gi, "em ikki")
+    .replace(/\bGB\b/gi, "gigabayt")
+    .replace(/\bType-C\b/gi, "taypsi")
+    .replace(/\bUSB-C\b/gi, "yu es bi si")
+    .replace(/\b48MP\b/gi, "qirq sakkiz megapiksel")
+    .replace(/\b120Hz\b/gi, "bir yuz yigirma gerts")
+    .replace(/\b20W\b/gi, "yigirma vatt")
+    .replace(/\bIP68\b/gi, "ay pi oltmish sakkiz")
+    .replace(/\bIP54\b/gi, "ay pi ellik to'rt")
+    .replace(/\bApple Watch\b/gi, "eppl voch")
+    .replace(/\bAirPods\b/gi, "eyrpods")
+    .replace(/\b1-kunlik\b/gi, "bir kunlik")
+    .replace(/\b2-kunlik\b/gi, "ikki kunlik")
+    .replace(/\b3-kunlik\b/gi, "uch kunlik")
+    .replace(/\b12 oyga\b/gi, "o'n ikki oyga")
+    .replace(/\b12 oylik\b/gi, "o'n ikki oylik")
+    .replace(/\b24 soatda\b/gi, "yigirma to'rt soatda")
+    .replace(/\b2 soatda\b/gi, "ikki soatda")
+    .replace(/\b1 yil\b/gi, "bir yil")
+    .replace(/\b1 yillik\b/gi, "bir yillik")
+    .replace(/\b5%\b/gi, "besh foiz")
+    .replace(/\b0%\b/gi, "nol foiz");
 
   return res;
 }
 
-// Insondek tabiiy gapirish uchun matnni tozalash
+// Insondek tabiiy gapirish uchun matnni tozalash va nafas pauzalari qo'yish
 function cleanTextForSpeech(text) {
+  if (!text) return "";
   const formatted = formatUzbekTextForHumanSpeech(text);
   return formatted
     .replace(/[\u{1F600}-\u{1F64F}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{1F1E0}-\u{1F1FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/gu, '')
     .replace(/[*#_`~•]/g, ' ')
+    .replace(/\n+/g, '. ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -444,7 +461,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
   };
 
   // ═══════════════════════════════════════════════════════════════════
-  // 🎙️ Tabiiy Inson Ovozida Gapirish (3-Tier: OpenAI → Edge Neural → Browser)
+  // 🎙️ Tabiiy Inson Ovozida Gapirish (Studio Neural MP3 → Edge Neural → Fallback)
   // ═══════════════════════════════════════════════════════════════════
   const speakText = async (rawText, onComplete) => {
     if (!voiceVoiceOutput) {
@@ -465,28 +482,90 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
         return;
       }
 
-      // Server orqali TTS so'rovi (OpenAI → Edge Neural → fallback cascade)
+      // 1. Studio darajasidagi oldindan yozilgan tabiiy neural audio fayllarni tekshirish (100% inson ovozi, 0ms kechikish)
+      const activeVoiceKey = (selectedVoice === 'sardor' || selectedVoice === 'onyx' || selectedVoice === 'ahmet' || selectedVoice === 'alloy') ? 'sardor' : 'madina';
+      let audioKey = null;
+      const lower = clean.toLowerCase();
+
+      if (lower.includes("universal ai yordamchisiman") || lower.includes("men appleuz") || lower.includes("xush kelibsiz")) {
+        audioKey = `welcome_${activeVoiceKey}`;
+      } else if (lower.includes("15 pro") && (lower.includes("12 million 500") || lower.includes("narxi hozirgi"))) {
+        audioKey = `reply_price_15pro_${activeVoiceKey}`;
+      } else if (lower.includes("farqlar") || (lower.includes("15 pro") && lower.includes("max"))) {
+        audioKey = `reply_compare_${activeVoiceKey}`;
+      } else if (lower.includes("dasturlash") || lower.includes("macbook")) {
+        audioKey = `reply_macbook_${activeVoiceKey}`;
+      } else if (lower.includes("nasiya") || lower.includes("bo'lib to'lash")) {
+        audioKey = `reply_nasiya_${activeVoiceKey}`;
+      } else if (lower.includes("yetkazib") || lower.includes("dostavka") || lower.includes("bepul yetkaz")) {
+        audioKey = `reply_delivery_${activeVoiceKey}`;
+      } else if (lower.includes("karta") || lower.includes("8600") || lower.includes("to'lov")) {
+        audioKey = `reply_card_${activeVoiceKey}`;
+      } else if (lower.includes("original") || lower.includes("kafolat") || lower.includes("muhrlangan")) {
+        audioKey = `reply_warranty_${activeVoiceKey}`;
+      } else if (lower.includes("chilonzor") || lower.includes("manzil") || lower.includes("ish vaqti")) {
+        audioKey = `reply_location_${activeVoiceKey}`;
+      } else if (lower.includes("katalog") || lower.includes("rasmiy tovarlar") || lower.includes("ro'yxat")) {
+        audioKey = `reply_catalog_${activeVoiceKey}`;
+      } else if (lower.includes("sun'iy intellekt") || lower.includes("inson aqliy")) {
+        audioKey = `reply_ai_${activeVoiceKey}`;
+      } else if (lower.includes("biznes") || lower.includes("sotuvni oshirish")) {
+        audioKey = `reply_business_${activeVoiceKey}`;
+      }
+
+      if (audioKey) {
+        try {
+          const audioUrl = `./audio/${audioKey}.mp3`;
+          const audio = new Audio(audioUrl);
+          audio.playbackRate = speechSpeed || 0.92;
+          currentAudioRef.current = audio;
+
+          audio.onended = () => {
+            setIsSpeaking(false);
+            if (onComplete) onComplete();
+            if (continuousCallMode && recognitionRef.current) {
+              setTimeout(() => {
+                try { recognitionRef.current.start(); } catch (e) {}
+              }, 400);
+            }
+          };
+
+          audio.onerror = () => {
+            console.warn("Pre-rendered audio yuklanmadi, server/brauzer TTS ishlatilmoqda");
+            fallbackBrowserSpeech(clean, onComplete);
+          };
+
+          await audio.play();
+          console.log(`🎙️ Studio Neural Audio: ${audioKey}.mp3 ijro etildi`);
+          return;
+        } catch (e) {
+          console.warn("Studio Audio play xatolik, server TTS ga o'tilmoqda:", e);
+        }
+      }
+
+      // 2. Server orqali jonli Neural TTS generatsiyasi (OpenAI TTS yoki Edge Neural TTS)
       const res = await fetch('/api/tts/speak', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text: clean,
           voice: selectedVoice,
-          speed: 0.95
+          speed: speechSpeed || 0.92
         })
       });
 
       const contentType = res.headers.get('content-type') || '';
       const ttsProvider = res.headers.get('x-tts-provider') || 'unknown';
 
-      // Server audio qaytargan bo'lsa (OpenAI yoki Edge Neural)
+      // Server audio qaytargan bo'lsa
       if (res.ok && contentType.includes('audio')) {
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
+        audio.playbackRate = speechSpeed || 0.92;
         currentAudioRef.current = audio;
 
-        console.log(`🔊 TTS Provider: ${ttsProvider} | Ovoz: ${selectedVoice}`);
+        console.log(`🔊 Jonli Neural TTS Provider: ${ttsProvider} | Ovoz: ${selectedVoice}`);
 
         audio.onended = () => {
           setIsSpeaking(false);
@@ -513,7 +592,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
       console.warn("Server TTS xatolik, tabiiy brauzer ovozi ishlatilmoqda:", err);
     }
 
-    // Oxirgi fallback: Yaxshilangan brauzer speech
+    // 3. Oxirgi fallback: Yaxshilangan brauzer speech (inson nafasi va tinish belgisi pauzalari bilan)
     fallbackBrowserSpeech(clean, onComplete);
   };
 
