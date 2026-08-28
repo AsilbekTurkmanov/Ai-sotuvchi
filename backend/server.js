@@ -498,21 +498,26 @@ app.post('/api/tts/test-edge', async (req, res) => {
 });
 
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const docsPath = path.join(__dirname, '../docs');
 const distPath = path.join(__dirname, '../dist');
+const staticPath = fs.existsSync(docsPath) ? docsPath : distPath;
 
-app.use(express.static(distPath));
-
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  res.sendFile(path.join(distPath, 'index.html'), (err) => {
-    if (err) next();
+if (fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(staticPath, 'index.html'), (err) => {
+      if (err) next();
+    });
   });
-});
+}
 
 app.listen(PORT, () => {
   console.log(`AI Sotuvchi Backend server http://localhost:${PORT} da ishga tushdi`);
 });
+

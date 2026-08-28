@@ -32,21 +32,32 @@ import {
 
 // O'zbek shevalari va og'zaki nutq so'zlarini standartlashtirish (Dialect & Speech Normalizer)
 function normalizeUzbekDialect(text) {
+  if (!text) return "";
   let res = text.trim();
   const replacements = [
     { from: /\bqatta(siz|da)?\b/gi, to: "qayerda" },
     { from: /\bob ket(aman|amiz|ay)\b/gi, to: "olib ketaman" },
     { from: /\btushib berin(g)?\b/gi, to: "arzon qilib bering" },
-    { from: /\bkelishtirvorin(g)?\b/gi, to: "chegirma qilib bering" },
+    { from: /\bkelishtir(vorin|ing|ib berin)\b/gi, to: "chegirma qilib bering" },
     { from: /\bqancha bo'l(yapti|votti|otti)\b/gi, to: "narxi qancha" },
     { from: /\bnech pul\b/gi, to: "narxi qancha" },
+    { from: /\bnecha pul\b/gi, to: "narxi qancha" },
+    { from: /\bskolko\b/gi, to: "narxi qancha" },
     { from: /\bkarta nomer\b/gi, to: "karta raqam" },
     { from: /\bnomeringizni tashlang\b/gi, to: "telefon raqamingizni bering" },
     { from: /\bzvanit qilin(g)?\b/gi, to: "telefon qiling" },
-    { from: /\brashrochka\b/gi, to: "bo'lib to'lash" },
+    { from: /\brashrochka|rassrochka\b/gi, to: "bo'lib to'lash" },
     { from: /\bnasiyaga bormi\b/gi, to: "bo'lib to'lash bormi" },
     { from: /\bgarantiya\b/gi, to: "kafolat" },
-    { from: /\bdastavka\b/gi, to: "yetkazib berish" }
+    { from: /\bdastavka\b/gi, to: "yetkazib berish" },
+    { from: /\boriginalmi\b/gi, to: "asl originalmi" },
+    { from: /\bpadarka\b/gi, to: "sovg'a" },
+    { from: /\bskidka\b/gi, to: "chegirma" },
+    { from: /\baktsiya\b/gi, to: "aksiya" },
+    { from: /\bnaxodka\b/gi, to: "arzon" },
+    { from: /\byaxshisi qaysi\b/gi, to: "qaysi biri yaxshi" },
+    { from: /\bsolish\b/gi, to: "solishtirish" },
+    { from: /\bpochet\b/gi, to: "pochta" }
   ];
 
   for (const r of replacements) {
@@ -126,6 +137,166 @@ const VOICE_PERSONAS = [
   { id: "shimmer", name: "Shimmer (Yoqimli)", desc: "Jonli, muloyim va samimiy ovoz — TTS-1-HD", type: "openai", icon: "👩‍💼", badge: "HD Premium" }
 ];
 
+// Universal Client-side Intelligent AI Engine (Offline / Static Hosting Fallback)
+function processCustomerMessageClient(messageText, leadInfo = {}) {
+  const cleanText = normalizeUzbekDialect(messageText).toLowerCase().trim();
+
+  const products = [
+    { name: "iPhone 15 Pro 256GB", price: 12500000, oldPrice: 13200000, monthly: 1250000, colors: ["Black Titanium", "Natural Titanium", "Blue Titanium", "White Titanium"], desc: "A17 Pro chip, Titanium korpus, 48MP kamera, 120Hz ProMotion" },
+    { name: "iPhone 15 Pro Max 256GB", price: 14200000, oldPrice: 14900000, monthly: 1420000, colors: ["Natural Titanium", "Black Titanium", "White Titanium"], desc: "6.7\" ekran, 5x optik telephoto zoom, A17 Pro, 4422 mAh batareya" },
+    { name: "MacBook Air M2 13.6\" 8/256GB", price: 11800000, oldPrice: 12500000, monthly: 1180000, colors: ["Midnight", "Space Gray", "Starlight", "Silver"], desc: "Apple M2 chip, 18 soat batareya, jim ventilyatorsiz dizayn, 1.24 kg" },
+    { name: "AirPods Pro 2 (USB-C)", price: 2450000, oldPrice: 2800000, monthly: 245000, colors: ["White"], desc: "2x kuchli ANC shovqin bekor qilish, H2 chip, IP54, 30 soat quvvat" },
+    { name: "Apple Watch Series 9 45mm", price: 4600000, oldPrice: 4900000, monthly: 460000, colors: ["Midnight", "Starlight", "Silver"], desc: "S9 SiP chip, Double Tap boshqaruvi, 2000 nit ekran, EKG, Pulse" }
+  ];
+
+  let matchedProduct = null;
+  for (const p of products) {
+    const pName = p.name.toLowerCase();
+    if (cleanText.includes(pName) || (cleanText.includes("15 pro max") && pName.includes("15 pro max")) ||
+        (cleanText.includes("15 pro") && !cleanText.includes("max") && pName.includes("15 pro") && !pName.includes("max")) ||
+        ((cleanText.includes("macbook") || cleanText.includes("m2") || cleanText.includes("noutbuk")) && pName.includes("macbook")) ||
+        ((cleanText.includes("airpods") || cleanText.includes("quloqchin") || cleanText.includes("naushnik")) && pName.includes("airpods")) ||
+        ((cleanText.includes("watch") || cleanText.includes("soat")) && pName.includes("watch"))) {
+      matchedProduct = p;
+      break;
+    }
+  }
+
+  let intent = "general_inquiry";
+  let sentiment = "neutral";
+  let stage = "Interest";
+  let leadScore = leadInfo.score || 40;
+  let isHandoff = false;
+  let handoffReason = "";
+  let responseText = "";
+
+  if (cleanText.includes("olaman") || cleanText.includes("karta") || cleanText.includes("raqam bering") || cleanText.includes("to'lov qil") || cleanText.includes("buyurtma") || cleanText.includes("olib ketaman") || cleanText.includes("dostavka qiling") || cleanText.includes("tashlang")) {
+    intent = "purchase_ready";
+    sentiment = "positive";
+    stage = "Purchase";
+    leadScore = 95;
+    isHandoff = true;
+    handoffReason = "Mijoz xaridga 100% tayyor (to'lov / buyurtma)";
+    const prodName = matchedProduct ? matchedProduct.name : "tanlangan mahsulot";
+    responseText = `Ajoyib qaror! Siz uchun ${prodName} modelini zaxiraga olib qo'ydik. 🎁\n\nTo'lov rekvizitlarini jo'natish va yetkazib berish manzilini aniqlashtirish uchun hozir katta sotuv menejerimiz (@ali_sales / +998 90 123 45 67) sizga bog'lanadi. 1 daqiqa kuting!`;
+  } else if (cleanText.includes("yomon") || cleanText.includes("aldov") || cleanText.includes("qimmat ekan") || cleanText.includes("lohotron") || cleanText.includes("yoqmadi")) {
+    intent = "complaint_negative";
+    sentiment = "negative";
+    stage = "Lost";
+    leadScore = 15;
+    isHandoff = true;
+    handoffReason = "Mijoz e'tiroz bildirdi";
+    responseText = `Keltirilgan noqulaylik uchun uzr so'raymiz! Biz uchun har bir mijoz fikri juda muhim. Sizga shaxsan yordam berish uchun bosh menejerimiz hozir siz bilan bog'lanadi.`;
+  } else if (cleanText.includes("operator") || cleanText.includes("sotuvchi") || cleanText.includes("odam bilan") || cleanText.includes("menejer") || cleanText.includes("telefon qiling")) {
+    intent = "manager_request";
+    stage = "Consideration";
+    leadScore = 75;
+    isHandoff = true;
+    handoffReason = "Mijoz inson-menejer bilan gaplashmoqchi";
+    responseText = `Albatta! Sizni tajribali sotuv menejerimizga ulayapman. Menejerimiz Ali Valiyev (@ali_sales / +998 90 123 45 67) hozir sizga aloqaga chiqadi.`;
+  } else if (cleanText.includes("katalog") || cleanText.includes("hamma mahsulot") || cleanText.includes("narxlar ro'yxat") || cleanText.includes("qanday tovar") || cleanText.includes("nimalar bor")) {
+    intent = "catalog_inquiry";
+    stage = "Awareness";
+    leadScore = 50;
+    const list = products.map((p, idx) => `${idx + 1}. 📱 **${p.name}** — ${new Intl.NumberFormat('uz-UZ').format(p.price)} UZS (oyiga ${new Intl.NumberFormat('uz-UZ').format(p.monthly)} UZS)`).join('\n');
+    responseText = `Bizning do'konimizdagi rasmiy va original mahsulotlar katalogi:\n\n${list}\n\nBarcha qurilmalarga 1 yillik rasmiy kafolat va Toshkentda 2 soatda bepul yetkazib berish mavjud. Qaysi model sizga ko'proq ma'qul?`;
+  } else if (cleanText.includes("solishtir") || cleanText.includes("farqi nima") || cleanText.includes("qaysi biri yaxshi") || cleanText.includes("qaysi birini olsam") || cleanText.includes("pro yoki pro max")) {
+    intent = "comparison";
+    stage = "Consideration";
+    leadScore = 65;
+    if (cleanText.includes("macbook") || cleanText.includes("air") || cleanText.includes("m2") || cleanText.includes("m3")) {
+      responseText = `MacBook Air M2 va MacBook Pro taqqoslashi:\n• **MacBook Air M2 (13.6")**: 11 800 000 UZS — Yupqa, 18 soat batareya, jim va qizimaydi. Dasturlash, ofis, talabalar va biznes uchun eng maqbul.\n• **MacBook Pro**: Og'ir 4K montaj va murakkab 3D ishlar uchun faol sovutishli flagman.\n\nSiz noutbukdan ko'proq qaysi yo'nalishda foydalanasiz?`;
+    } else {
+      responseText = `iPhone 15 Pro va 15 Pro Max farqlari:\n1. 📱 **Ekran:** 15 Pro (6.1" ixcham) vs 15 Pro Max (6.7" katta ekran).\n2. 📸 **Kamera:** 15 Pro (3x zoom) vs 15 Pro Max (5x optik tetraprisma zoom).\n3. 🔋 **Batareya:** 15 Pro (3274 mAh) vs 15 Pro Max (4422 mAh eng kuchli quvvat).\n\nIxchamlik kerak bo'lsa — iPhone 15 Pro, katta ekran va uzoq quvvat kerak bo'lsa — 15 Pro Max tavsiya qilamiz!`;
+    }
+  } else if (cleanText.includes("bo'lib to'lash") || cleanText.includes("bolib tolash") || cleanText.includes("nasiya") || cleanText.includes("rassrochka") || cleanText.includes("oyiga") || cleanText.includes("uzum")) {
+    intent = "installment_inquiry";
+    stage = "Consideration";
+    leadScore = 70;
+    if (matchedProduct) {
+      responseText = `Ha, albatta! ${matchedProduct.name} uchun Uzum Nasiya va Anorbank orqali boshlang'ich to'lovsiz, 12 oyga oyiga bor-yo'g'i ${new Intl.NumberFormat('uz-UZ').format(matchedProduct.monthly)} UZSdan bo'lib to'lashingiz mumkin.\n\nRasmiylashtirish uchun faqat pasport va plastik karta kifoya. Rasmiylashtiraylikmi?`;
+    } else {
+      responseText = `Bizda barcha mahsulotlarni Uzum Nasiya va Anorbank orqali boshlang'ich to'lovsiz 3, 6 yoki 12 oyga muddatli to'lovga xarid qilishingiz mumkin. Qaysi mahsulotni tanlamoqchisiz?`;
+    }
+  } else if (cleanText.includes("skidka") || cleanText.includes("chegirma") || cleanText.includes("arzon") || cleanText.includes("tushib") || cleanText.includes("kelishtir")) {
+    intent = "discount_inquiry";
+    stage = "Consideration";
+    leadScore = 65;
+    if (matchedProduct) {
+      const disc = Math.round(matchedProduct.price * 0.95);
+      responseText = `Bizda narxlar eng maqbul ulgurji narxlarda. Lekin siz uchun maxsus 5% chegirma bilan ${new Intl.NumberFormat('uz-UZ').format(disc)} UZSga rasmiylashtirib, ustiga 20W adapter va himoya oynasini sovg'a qilib beramiz! Buyurtma qilasizmi?`;
+    } else {
+      responseText = `Mijozlarimiz uchun maxsus aksiyalarimiz va sovg'alarimiz mavjud! Qaysi mahsulotga chegirma olmoqchisiz?`;
+    }
+  } else if (cleanText.includes("narxi") || cleanText.includes("narx") || cleanText.includes("qancha") || cleanText.includes("necha pul")) {
+    intent = "price_inquiry";
+    stage = "Interest";
+    leadScore = 55;
+    if (matchedProduct) {
+      responseText = `${matchedProduct.name} narxi hozirda aksiyada ${new Intl.NumberFormat('uz-UZ').format(matchedProduct.price)} UZS (Eski narx: ${new Intl.NumberFormat('uz-UZ').format(matchedProduct.oldPrice)} UZS).\nRanglari: ${matchedProduct.colors.join(', ')}.\nToshkentda yetkazib berish BEPUL! Qaysi rang yoqadi?`;
+    } else {
+      responseText = `Bizda barcha Apple tovarlari eng qulay narxlarda mavjud: iPhone 15 Pro (12.5 mln), 15 Pro Max (14.2 mln), MacBook Air M2 (11.8 mln), AirPods Pro 2 (2.45 mln). Qaysi birining narxi qiziq?`;
+    }
+  } else if (cleanText.includes("yetkazib") || cleanText.includes("dostavka") || cleanText.includes("viloyat") || cleanText.includes("pochta") || cleanText.includes("samarqand")) {
+    intent = "delivery_inquiry";
+    stage = "Consideration";
+    leadScore = 60;
+    responseText = `Toshkent shahri bo'ylab 2 soat ichida mutlaqo BEPUL yetkazib beramiz! Viloyatlarga BTS pochta orqali 1 kunda (35 000 so'm) xavfsiz yetkaziladi. Qaysi manzilga buyurtma berasiz?`;
+  } else if (cleanText.includes("original") || cleanText.includes("kafolat") || cleanText.includes("garantiya") || cleanText.includes("trade-in")) {
+    intent = "warranty_inquiry";
+    stage = "Consideration";
+    leadScore = 60;
+    responseText = `Barcha mahsulotlarimiz 100% original, yangi va qutisi muhrlangan (sealed). 1 yil to'liq rasmiy kafolat beriladi hamda 14 kun ichida almashtirish kafolatlangan. Shuningdek eski iPhoneni Trade-In qilish ham mumkin!`;
+  } else if (cleanText.includes("manzil") || cleanText.includes("qayerda") || cleanText.includes("dokon") || cleanText.includes("ish vaqti")) {
+    intent = "location_inquiry";
+    stage = "Consideration";
+    leadScore = 65;
+    responseText = `Do'konimiz manzili: Toshkent sh., Chilonzor tumani, Bunyodkor shoh ko'chasi, 15-uy.\nIsh vaqtimiz: Dushanba - Yakshanba 09:00 dan 21:00 gacha.\nTelefon: +998 90 123 45 67.`;
+  } else if (cleanText.includes("dasturlash") || cleanText.includes("it") || cleanText.includes("dasturchi") || cleanText.includes("flutter") || cleanText.includes("noutbuk tanlash")) {
+    intent = "tech_advice";
+    stage = "Consideration";
+    leadScore = 65;
+    responseText = `Dasturlash va IT ishlari uchun eng qulay noutbuk — Apple MacBook Air M2 (11 800 000 UZS). UNIX tizimi, 18 soat zaryad saqlashi va jim ishlashi bilan dasturchilarning 1-raqamli tanlovi. Do'konimizda bo'lib to'lashga ham mavjud!`;
+  } else if (cleanText.includes("sun'iy intellekt") || cleanText.includes("ai") || cleanText.includes("chatgpt")) {
+    intent = "ai_knowledge";
+    stage = "Awareness";
+    leadScore = 40;
+    responseText = `Sun'iy Intellekt (AI) — inson aqliy vazifalarini avtomatlashtiruvchi zamonaviy texnologiya. Bizning AI Sotuvchi tizimimiz ham savdo va mijozlarga 24/7 xizmat ko'rsatish uchun sun'iy intellektga tayangan holda ishlaydi!`;
+  } else if (cleanText.includes("biznes") || cleanText.includes("sotuv") || cleanText.includes("crm")) {
+    intent = "business_advice";
+    stage = "Awareness";
+    leadScore = 55;
+    responseText = `Biznesda sotuvni oshirish siri — mijozga 1 daqiqada tezkor javob berish, Hot Leadlarni aniqlash va avtomatlashtirilgan follow-up yuborishdir. Bizning AI Sotuvchi tizimi aynan shu jarayonni to'liq avtomatlashtiradi!`;
+  } else if (cleanText.includes("salom") || cleanText.includes("assalom") || cleanText.includes("qalesiz") || cleanText.includes("yaxshimisiz")) {
+    intent = "greeting";
+    stage = "Awareness";
+    leadScore = 35;
+    responseText = `Assalomu alaykum! Xush kelibsiz! Men AppleUz universal AI sotuvchi va maslahatchisiman. Sizga qaysi mahsulot, narxlar yoki texnik maslahat bo'yicha yordam beray?`;
+  } else {
+    intent = "general_knowledge";
+    responseText = `Savolingiz uchun tashakkur! 😊 Men universal AI maslahatchi sifatida har qanday texnologik, savdo va hayotiy savollarga javob bera olaman.\n\nDo'konimizda iPhone 15 Pro, MacBook Air M2, AirPods va Apple Watch eng qulay narxlarda, 1 yil kafolat va bo'lib to'lash bilan mavjud. Sizga qanday qo'shimcha ma'lumot kerak?`;
+  }
+
+  let status = "contacted";
+  if (leadScore >= 80) status = "hot";
+  else if (leadScore >= 60) status = "interested";
+  else if (sentiment === "negative") status = "lost";
+
+  return {
+    response: responseText,
+    intent,
+    sentiment,
+    stage,
+    score: leadScore,
+    status,
+    matchedProduct: matchedProduct ? matchedProduct.name : (leadInfo.interestProduct || "iPhone 15 Pro 256GB"),
+    productPrice: matchedProduct ? matchedProduct.price : (leadInfo.productPrice || 12500000),
+    isHandoff,
+    handoffReason,
+    usedLLM: false
+  };
+}
+
 export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
   const [messages, setMessages] = useState([
     { sender: "ai", text: "Assalomu alaykum! AppleUz do'konining universal AI yordamchisiman. Siz bilan ChatGPT 4o studio ovozida yoki o'zingizning ovoz kloningizda gaplasha olaman. Qanday yordam bera olaman?", time: "18:45" }
@@ -143,7 +314,6 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
   const [continuousCallMode, setContinuousCallMode] = useState(false);
   const [recognizedVoiceNote, setRecognizedVoiceNote] = useState("");
   const [speechSupported, setSpeechSupported] = useState(true);
-  const [showMobileDiagnostics, setShowMobileDiagnostics] = useState(false);
 
   // Audio Chimes Synthesizer via Web Audio API
   const playAudioChime = (type = 'receive') => {
@@ -189,7 +359,6 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
   const recognitionRef = useRef(null);
   const currentAudioRef = useRef(null);
-  const audioContextRef = useRef(null);
   const chatEndRef = useRef(null);
 
   // Real-time AI Diagnostics State
@@ -248,7 +417,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
     }
   }, []);
 
-  // Voice Cloner Analyzer (Ovozni o'rganish va parametrlarini olish)
+  // Voice Cloner Analyzer
   const startVoiceCloningAnalysis = () => {
     setIsCloningRecording(true);
     setCloneProgress(10);
@@ -289,50 +458,6 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
     try {
       setIsSpeaking(true);
-
-      // 1. Pre-rendered Neural Uzbek Human Voice MP3 check (for static GitHub Pages hosting)
-      const activeVoiceKey = (selectedVoice === 'sardor' || selectedVoice === 'onyx' || selectedVoice === 'ahmet') ? 'sardor' : 'madina';
-      let audioKey = null;
-
-      if (rawText.includes("universal AI yordamchisiman") || rawText.includes("Assalomu alaykum! Men")) {
-        audioKey = `welcome_${activeVoiceKey}`;
-      } else if (rawText.includes("iPhone 15 Pro 256GB va MacBook") || rawText.includes("Savolingiz uchun rahmat")) {
-        audioKey = `reply_price_${activeVoiceKey}`;
-      } else if (rawText.includes("Toshkent bo'ylab yetkazib berish") || rawText.includes("BEPUL")) {
-        audioKey = `reply_delivery_${activeVoiceKey}`;
-      } else if (rawText.includes("Karta raqamimiz") || rawText.includes("8600")) {
-        audioKey = `reply_card_${activeVoiceKey}`;
-      }
-
-      if (audioKey) {
-        try {
-          const audioUrl = `./audio/${audioKey}.mp3`;
-          const audio = new Audio(audioUrl);
-          audio.playbackRate = speechSpeed || 0.95;
-          currentAudioRef.current = audio;
-
-          audio.onended = () => {
-            setIsSpeaking(false);
-            if (onComplete) onComplete();
-            if (continuousCallMode && recognitionRef.current) {
-              setTimeout(() => {
-                try { recognitionRef.current.start(); } catch (e) {}
-              }, 400);
-            }
-          };
-
-          audio.onerror = () => {
-            console.warn("Pre-rendered audio topilmadi, server / brauzer speech ishlatilmoqda");
-            fallbackBrowserSpeech(clean, onComplete);
-          };
-
-          await audio.play();
-          console.log(`🎙️ Pre-rendered Neural Audio: ${audioKey}.mp3 play qilindi`);
-          return;
-        } catch (e) {
-          console.warn("Audio play xatolik:", e);
-        }
-      }
 
       // Agar ovoz kloni tanlangan bo'lsa
       if (selectedVoice === "custom-clone") {
@@ -412,24 +537,19 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
       // Eng tabiiy ovozni topish
       const voices = window.speechSynthesis.getVoices();
       const naturalVoice = 
-        // 1. Neural/Natural ovozlar (eng yaxshi sifat)
         voices.find(v => 
           (v.name.includes("Natural") || v.name.includes("Neural")) &&
           (v.lang.startsWith("uz") || v.lang.startsWith("tr"))
         ) ||
-        // 2. O'zbek yoki Turk tilidagi har qanday ovoz
         voices.find(v => v.lang.startsWith("uz") || v.lang.startsWith("tr")) ||
-        // 3. Rus tilidagi Neural ovoz
         voices.find(v => 
           (v.name.includes("Natural") || v.name.includes("Neural")) &&
           v.lang.startsWith("ru")
         ) ||
-        // 4. Inglizcha Neural ovoz
         voices.find(v => 
           (v.name.includes("Natural") || v.name.includes("Neural") || v.name.includes("Online")) &&
           v.lang.startsWith("en")
         ) ||
-        // 5. Har qanday Rus ovoz
         voices.find(v => v.lang.startsWith("ru"));
 
       // Ovoz parametrlari — tabiiyroq sozlamalar
@@ -438,13 +558,13 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
         if (customPitch !== null) return { rate: 0.88 * mult, pitch: customPitch };
         switch (selectedVoice) {
           case 'onyx': case 'sardor': case 'ahmet': case 'dmitry':
-            return { rate: 0.88 * mult, pitch: 0.88 };   // Erkak — sekinroq, pastroq
+            return { rate: 0.88 * mult, pitch: 0.88 };
           case 'nova': case 'madina': case 'emel': case 'svetlana':
-            return { rate: 0.92 * mult, pitch: 1.04 };    // Ayol — biroz tezroq, balandroq  
+            return { rate: 0.92 * mult, pitch: 1.04 };
           case 'shimmer':
-            return { rate: 0.94 * mult, pitch: 1.06 };    // Yoqimli — ravon va iliq
+            return { rate: 0.94 * mult, pitch: 1.06 };
           default:
-            return { rate: 0.90 * mult, pitch: 0.98 };    // Default — tabiiy
+            return { rate: 0.90 * mult, pitch: 0.98 };
         }
       };
 
@@ -453,7 +573,6 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
       const speakNextSentence = () => {
         if (sentenceIndex >= sentences.length) {
-          // Barcha jumlalar o'qib bo'lindi
           setIsSpeaking(false);
           if (onComplete) onComplete();
           if (continuousCallMode && recognitionRef.current) {
@@ -476,21 +595,18 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
 
         utterance.onstart = () => setIsSpeaking(true);
         utterance.onend = () => {
-          // Jumlalar orasida tabiiy pauza (250-450ms)
           const pauseDuration = sentence.endsWith('?') ? 450 : 
                                 sentence.endsWith('!') ? 400 : 
                                 sentence.endsWith('.') ? 350 : 250;
           setTimeout(speakNextSentence, pauseDuration);
         };
         utterance.onerror = () => {
-          // Xatolik bo'lsa keyingi jumlaga o'tish
           setTimeout(speakNextSentence, 200);
         };
 
         window.speechSynthesis.speak(utterance);
       };
 
-      // Birinchi jumlani o'qishni boshlash
       speakNextSentence();
 
     } catch (e) {
@@ -533,11 +649,13 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
   };
 
   const quickPrompts = [
-    { label: "📱 Narx so'rash", text: "iPhone 15 Pro 256GB narxi qancha hozir?" },
+    { label: "📱 15 Pro narxi", text: "iPhone 15 Pro 256GB narxi qancha hozir?" },
+    { label: "⚖️ 15 Pro vs Pro Max", text: "iPhone 15 Pro va 15 Pro Max farqi nima, qaysi birini olsam yaxshi?" },
     { label: "💳 Bo'lib to'lash", text: "Uzum Nasiya orqali bo'lib to'lasa bo'ladimi, oyiga qancha?" },
-    { label: "🔥 Sotib olishga tayyor", text: "Karta raqam bering, hozir to'lov qilib Toshkentga dostavka qildiraman!" },
-    { label: "⚖️ Sheva: Narx va Skidka", text: "Aka tushib berin, 12 mlnga ob ketaman, yetkazib berilarmi?" },
-    { label: "💡 Umumiy: Maslahat", text: "Dasturlash va ofis ishlari uchun qaysi noutbukni maslahat berasiz?" },
+    { label: "💻 Dasturlash uchun noutbuk", text: "Dasturlash va ofis ishlari uchun qaysi MacBookni maslahat berasiz?" },
+    { label: "🔥 Sotib olish (Hot Lead)", text: "Karta raqam bering, hozir to'lov qilib Toshkentga dostavka qildiraman!" },
+    { label: "🗣️ Sheva: Narx & Skidka", text: "Aka tushib berin, 12 mlnga ob ketaman, yetkazib berilarmi?" },
+    { label: "📦 Barcha katalog", text: "Do'koningizdagi barcha tovarlar narxlari ro'yxatini bering" },
     { label: "🚚 Samarqandga yetkazish", text: "Samarqandga yetkazib berish qancha vaqtda boradi?" }
   ];
 
@@ -588,23 +706,25 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
       }
       if (onLeadUpdated) onLeadUpdated();
     } catch (err) {
-      // Fallback for static hosting (GitHub Pages) demo simulation
-      const fallbackReplies = [
-        `Assalomu alaykum! Savolingiz uchun rahmat. AppleUz do'konimizda iPhone 15 Pro 256GB va MacBook modellariga 1 yillik rasmiy kafolat hamda Uzum Nasiya orqali 12 oylik muddatli to'lov mavjud. Qaysi rang va xotira varianti ma'qul?`,
-        `Toshkent bo'ylab yetkazib berish 2 soatda BEPUL! Viloyatlarga BTS pochta orqali 1 kunda (35 000 so'm) yetkazib beramiz. Buyurtma raspisalaymizmi?`,
-        `Albatta! Karta raqamimiz: 8600 **** **** 1234 (AppleUz Store). To'lov qilinganingizdan so'ng chekni yuborsangiz, darhol kurerni jo'natamiz!`
-      ];
-      const reply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+      // Universal Intelligent Client Engine Fallback (Full Knowledge & Smart Reasoning)
+      const data = processCustomerMessageClient(text, { score: aiDiagnostics.score, interestProduct: aiDiagnostics.matchedProduct });
       setMessages(prev => [
         ...prev,
         {
           sender: "ai",
-          text: reply,
-          time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+          text: data.response,
+          time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
+          isHandoff: data.isHandoff,
+          intent: data.intent
         }
       ]);
+      setAiDiagnostics({
+        intent: data.intent, sentiment: data.sentiment, stage: data.stage,
+        score: data.score, matchedProduct: data.matchedProduct, productPrice: data.productPrice,
+        isHandoff: data.isHandoff, handoffReason: data.handoffReason, guardrailsPassed: true, usedLLM: false
+      });
       playAudioChime('receive');
-      speakText(reply);
+      speakText(data.response);
     } finally {
       setLoading(false);
     }
@@ -638,7 +758,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
-              ChatGPT 4o Voice & Voice Cloning
+              Universal AI Voice & Chat
             </span>
             <h1 className="text-xl font-extrabold text-white">ChatGPT 4o & Ovoz Klonlash Muloqoti</h1>
           </div>
@@ -802,7 +922,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-400 font-medium">
-                    {isSpeaking ? 'Jonli inson ovozida javob bermoqda' : 'ChatGPT 4o & Klonlangan Ovoz Faol'}
+                    {isSpeaking ? 'Jonli inson ovozida javob bermoqda' : 'Universal Savdo & Maslahat AI'}
                   </div>
                 </div>
               </div>
@@ -961,7 +1081,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder={isRecording ? "Ovozingiz tinglanmoqda..." : "Xabar yozing yoki mikrofonga gapiring..."}
+                  placeholder={isRecording ? "Ovozingiz tinglanmoqda..." : "Har qanday savolingizni yozing yoki mikrofonga gapiring..."}
                   className="flex-1 bg-slate-800/90 border border-slate-700 text-white rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-indigo-500 transition-colors"
                 />
 
@@ -979,8 +1099,8 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
           {/* Quick Click Prompts */}
           <div className="w-full max-w-md mt-4">
             <div className="text-[11px] font-semibold text-slate-400 mb-2 flex items-center justify-between">
-              <span>⚡ Tayyor savollar & Shevalar:</span>
-              <span className="text-[10px] text-purple-400 font-normal">ChatGPT 4o HD Ovoz Faol</span>
+              <span>⚡ Tezkor savollar & Mavzular:</span>
+              <span className="text-[10px] text-purple-400 font-normal">Har qanday savolga javob</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {quickPrompts.map((p, idx) => (
@@ -1005,7 +1125,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
                 <h2 className="text-sm font-bold text-white">AI Agent & Ovoz Tahlili</h2>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30 font-semibold">
-                ChatGPT 4o HD Active
+                Universal Engine Active
               </span>
             </div>
 
