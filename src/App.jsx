@@ -177,26 +177,45 @@ export default function App() {
 
   // Settings & Guardrails Update
   const handleUpdateSettings = async (patch) => {
-    const res = await fetch('/api/settings', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(patch)
-    });
-    const updated = await res.json();
-    setSettings(updated);
-    fetchData();
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch)
+      });
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const updated = await res.json();
+        setSettings(updated);
+      } else {
+        setSettings(prev => ({ ...prev, ...patch }));
+      }
+      fetchData();
+    } catch (err) {
+      console.warn("Sozlamalarni serverga saqlashda ogohlantirish:", err);
+      setSettings(prev => ({ ...prev, ...patch }));
+    }
   };
 
   // Follow-up Trigger
   const handleTriggerFollowUp = async (leadId, templateId) => {
-    const res = await fetch('/api/follow-ups/trigger', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ leadId, templateId })
-    });
-    const data = await res.json();
-    fetchData();
-    return data;
+    try {
+      const res = await fetch('/api/follow-ups/trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leadId, templateId })
+      });
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        fetchData();
+        return data;
+      }
+      throw new Error("Server javob bermadi");
+    } catch (err) {
+      console.error("Follow-up xatosi:", err);
+      return { success: false, message: err.message };
+    }
   };
 
   // Telegram Bot Operations
@@ -206,6 +225,10 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, managerChatId })
     });
+    const contentType = res.headers.get('content-type') || '';
+    if (!res.ok || !contentType.includes('application/json')) {
+      throw new Error("Backend server (Node.js) ishlamayapti! Telegram bot ishlashi uchun terminal orqali 'npm run dev' buyrug'ini ishga tushiring.");
+    }
     const data = await res.json();
     fetchData();
     return data;
@@ -213,13 +236,22 @@ export default function App() {
 
   const handleStopBot = async () => {
     const res = await fetch('/api/telegram/stop', { method: 'POST' });
+    const contentType = res.headers.get('content-type') || '';
+    if (!res.ok || !contentType.includes('application/json')) {
+      throw new Error("Backend server (Node.js) ishlamayapti!");
+    }
     const data = await res.json();
     fetchData();
     return data;
   };
 
   const handleTestAlert = async () => {
-    await fetch('/api/telegram/test-alert', { method: 'POST' });
+    const res = await fetch('/api/telegram/test-alert', { method: 'POST' });
+    const contentType = res.headers.get('content-type') || '';
+    if (!res.ok || !contentType.includes('application/json')) {
+      throw new Error("Backend server (Node.js) ishlamayapti!");
+    }
+    return await res.json();
   };
 
   const hotCount = leads.filter(l => l.status === 'hot').length;

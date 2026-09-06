@@ -351,7 +351,7 @@ app.get('/api/telegram/status', (req, res) => {
   res.json({ isRunning: status.isRunning, botActive: db.settings.botActive, tokenConfigured: !!db.settings.telegramBotToken });
 });
 
-app.post('/api/telegram/start', (req, res) => {
+app.post('/api/telegram/start', async (req, res) => {
   const db = getDb();
   const token = req.body.token || db.settings.telegramBotToken;
   if (!token) return res.status(400).json({ error: "Bot tokeni mavjud emas" });
@@ -362,7 +362,7 @@ app.post('/api/telegram/start', (req, res) => {
   }
   saveDb(db);
 
-  const result = startTelegramBot(token);
+  const result = await startTelegramBot(token);
   res.json(result);
 });
 
@@ -509,7 +509,7 @@ const staticPath = fs.existsSync(docsPath) ? docsPath : distPath;
 
 if (fs.existsSync(staticPath)) {
   app.use(express.static(staticPath));
-  app.get('*', (req, res, next) => {
+  app.get('{*path}', (req, res, next) => {
     if (req.path.startsWith('/api')) return next();
     res.sendFile(path.join(staticPath, 'index.html'), (err) => {
       if (err) next();

@@ -29,17 +29,30 @@ export async function sendHotLeadNotification(lead, reason) {
   }
 }
 
-export function startTelegramBot(token) {
+export async function startTelegramBot(token) {
   if (!token) return { success: false, message: "Bot tokeni kiritilmagan" };
 
   try {
     if (botInstance && isRunning) {
-      botInstance.stop('RESTART');
+      try {
+        botInstance.stop('RESTART');
+      } catch (e) {
+        console.warn("Eski bot to'xtatish:", e.message);
+      }
+      isRunning = false;
     }
 
-    botInstance = new Telegraf(token);
+    const bot = new Telegraf(token);
 
-    botInstance.start(async (ctx) => {
+    // Bot tokenining haqiqiy va to'g'riligini Telegram API dan tekshirish
+    const botInfo = await bot.telegram.getMe();
+    console.log(`Telegram bot tasdiqlandi: @${botInfo.username}`);
+
+    bot.catch((err, ctx) => {
+      console.error(`Telegram bot xatosi [${ctx?.updateType}]:`, err.message);
+    });
+
+    bot.start(async (ctx) => {
       const db = getDb();
       const userName = ctx.from.first_name + (ctx.from.last_name ? ` ${ctx.from.last_name}` : '');
       const username = ctx.from.username ? `@${ctx.from.username}` : '';
@@ -87,7 +100,7 @@ export function startTelegramBot(token) {
       await ctx.reply(welcomeMsg);
     });
 
-    botInstance.on('text', async (ctx) => {
+    bot.on('text', async (ctx) => {
       const userText = ctx.message.text;
       const userName = ctx.from.first_name + (ctx.from.last_name ? ` ${ctx.from.last_name}` : '');
       const username = ctx.from.username ? `@${ctx.from.username}` : '';
@@ -167,18 +180,24 @@ export function startTelegramBot(token) {
       }
     });
 
-    botInstance.launch();
+    bot.launch().catch((err) => {
+      console.error("Bot launch xatosi:", err.message);
+      isRunning = false;
+    });
+
+    botInstance = bot;
     isRunning = true;
     const db = getDb();
     db.settings.botActive = true;
     saveDb(db);
 
-    console.log("Telegram bot muvaffaqiyatli ishga tushirildi");
-    return { success: true, message: "Bot muvaffaqiyatli ishga tushirildi" };
+    console.log(`Telegram bot muvaffaqiyatli ishga tushirildi (@${botInfo.username})`);
+    return { success: true, message: `Bot (@${botInfo.username}) muvaffaqiyatli ishga tushirildi!` };
   } catch (err) {
-    console.error("Telegram botni ishga tushirishda xatolik:", err);
+    console.error("Telegram botni ishga tushirishda xatolik:", err.message);
     isRunning = false;
-    return { success: false, message: err.message };
+    const msg = err.description || err.message || "Telegram bilan bog'lanib bo'lmadi";
+    return { success: false, message: "Telegram xatosi: " + msg };
   }
 }
 

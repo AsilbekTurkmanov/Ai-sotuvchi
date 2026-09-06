@@ -34,10 +34,18 @@ export default function TelegramHubView({ settings, botStatus, onStartBot, onSto
           return;
         }
         const res = await onStartBot(botToken, managerChatId);
-        setActionMessage({ success: res.success, text: res.message || "Bot ishga tushirildi!" });
+        if (res && res.success) {
+          setActionMessage({ success: true, text: res.message || "Bot muvaffaqiyatli ishga tushirildi!" });
+        } else {
+          setActionMessage({ success: false, text: (res && res.message) || "Botni ishga tushirib bo'lmadi." });
+        }
       }
     } catch (err) {
-      setActionMessage({ success: false, text: err.message });
+      let msg = err.message || "Noma'lum xatolik";
+      if (msg.includes("Unexpected token") || msg.includes("is not valid JSON") || msg.includes("Failed to fetch")) {
+        msg = "Backend server (Node.js) ishga tushmagan! Telegram bot ishlashi uchun kompyuteringizda terminal orqali 'npm run dev' buyrug'ini ishga tushirishingiz kerak.";
+      }
+      setActionMessage({ success: false, text: msg });
     } finally {
       setLoading(false);
     }
@@ -49,7 +57,11 @@ export default function TelegramHubView({ settings, botStatus, onStartBot, onSto
       await onTestAlert();
       setActionMessage({ success: true, text: "Test Hot Lead bildirishnomasi Telegram orqali yuborildi!" });
     } catch (err) {
-      setActionMessage({ success: false, text: "Xabar jo'natishda xatolik: " + err.message });
+      let msg = err.message || "";
+      if (msg.includes("Unexpected token") || msg.includes("is not valid JSON") || msg.includes("Failed to fetch")) {
+        msg = "Backend server (Node.js) ishga tushmagan!";
+      }
+      setActionMessage({ success: false, text: "Xabar jo'natishda xatolik: " + msg });
     } finally {
       setLoading(false);
     }
