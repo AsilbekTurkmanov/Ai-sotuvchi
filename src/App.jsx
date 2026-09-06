@@ -9,6 +9,7 @@ import FollowUpView from './components/FollowUpView';
 import GuardrailsView from './components/GuardrailsView';
 import TelegramHubView from './components/TelegramHubView';
 import LeadModal from './components/LeadModal';
+import { apiFetch, getBackendUrl, setBackendUrl } from './utils/apiClient';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -22,11 +23,20 @@ export default function App() {
   const [selectedLead, setSelectedLead] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [backendUrl, setBackendUrlState] = useState(getBackendUrl());
+
+  const handleUpdateBackendUrl = (newUrl) => {
+    setBackendUrl(newUrl);
+    setBackendUrlState(newUrl);
+    setTimeout(() => {
+      fetchData();
+    }, 100);
+  };
 
   // Safe fetch helper for static hosting compatibility (GitHub Pages fallback)
   const safeFetch = async (url, fallbackData) => {
     try {
-      const res = await fetch(url);
+      const res = await apiFetch(url);
       const contentType = res.headers.get('content-type') || '';
       if (res.ok && contentType.includes('application/json')) {
         return await res.json();
@@ -116,7 +126,7 @@ export default function App() {
   // Lead CRUD handlers
   const handleAddNewLead = async (newLead) => {
     try {
-      const res = await fetch('/api/leads', {
+      const res = await apiFetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newLead)
@@ -129,7 +139,7 @@ export default function App() {
 
   const handleUpdateLead = async (id, patch) => {
     try {
-      const res = await fetch(`/api/leads/${id}`, {
+      const res = await apiFetch(`/api/leads/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(patch)
@@ -147,7 +157,7 @@ export default function App() {
 
   // Product CRUD
   const handleAddProduct = async (product) => {
-    await fetch('/api/products', {
+    await apiFetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(product)
@@ -156,13 +166,13 @@ export default function App() {
   };
 
   const handleDeleteProduct = async (id) => {
-    await fetch(`/api/products/${id}`, { method: 'DELETE' });
+    await apiFetch(`/api/products/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
   // FAQ CRUD
   const handleAddFaq = async (item) => {
-    await fetch('/api/faq', {
+    await apiFetch('/api/faq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item)
@@ -171,14 +181,14 @@ export default function App() {
   };
 
   const handleDeleteFaq = async (id) => {
-    await fetch(`/api/faq/${id}`, { method: 'DELETE' });
+    await apiFetch(`/api/faq/${id}`, { method: 'DELETE' });
     fetchData();
   };
 
   // Settings & Guardrails Update
   const handleUpdateSettings = async (patch) => {
     try {
-      const res = await fetch('/api/settings', {
+      const res = await apiFetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(patch)
@@ -200,7 +210,7 @@ export default function App() {
   // Follow-up Trigger
   const handleTriggerFollowUp = async (leadId, templateId) => {
     try {
-      const res = await fetch('/api/follow-ups/trigger', {
+      const res = await apiFetch('/api/follow-ups/trigger', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ leadId, templateId })
@@ -220,7 +230,7 @@ export default function App() {
 
   // Telegram Bot Operations
   const handleStartBot = async (token, managerChatId) => {
-    const res = await fetch('/api/telegram/start', {
+    const res = await apiFetch('/api/telegram/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, managerChatId })
@@ -235,7 +245,7 @@ export default function App() {
   };
 
   const handleStopBot = async () => {
-    const res = await fetch('/api/telegram/stop', { method: 'POST' });
+    const res = await apiFetch('/api/telegram/stop', { method: 'POST' });
     const contentType = res.headers.get('content-type') || '';
     if (!res.ok || !contentType.includes('application/json')) {
       throw new Error("Backend server (Node.js) ishlamayapti!");
@@ -246,7 +256,7 @@ export default function App() {
   };
 
   const handleTestAlert = async () => {
-    const res = await fetch('/api/telegram/test-alert', { method: 'POST' });
+    const res = await apiFetch('/api/telegram/test-alert', { method: 'POST' });
     const contentType = res.headers.get('content-type') || '';
     if (!res.ok || !contentType.includes('application/json')) {
       throw new Error("Backend server (Node.js) ishlamayapti!");
@@ -346,6 +356,8 @@ export default function App() {
                 <TelegramHubView
                   settings={settings}
                   botStatus={botStatus}
+                  backendUrl={backendUrl}
+                  onUpdateBackendUrl={handleUpdateBackendUrl}
                   onStartBot={handleStartBot}
                   onStopBot={handleStopBot}
                   onTestAlert={handleTestAlert}

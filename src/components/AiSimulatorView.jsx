@@ -29,6 +29,7 @@ import {
   Sliders,
   Check
 } from 'lucide-react';
+import { apiFetch } from '../utils/apiClient';
 
 // O'zbek shevalari va og'zaki nutq so'zlarini standartlashtirish (Dialect & Speech Normalizer)
 function normalizeUzbekDialect(text) {
@@ -544,7 +545,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
       }
 
       // 2. Server orqali jonli Neural TTS generatsiyasi (OpenAI TTS yoki Edge Neural TTS)
-      const res = await fetch('/api/tts/speak', {
+      const res = await apiFetch('/api/tts/speak', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -752,7 +753,7 @@ export default function AiSimulatorView({ onLeadUpdated, onOpenCrmLead }) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat/simulate', {
+      const res = await apiFetch('/api/chat/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

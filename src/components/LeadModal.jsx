@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, 
-  Flame, 
   Phone, 
-  MessageSquare, 
   Send, 
+  User, 
+  Calendar, 
+  MessageSquare, 
+  Bot, 
+  ShieldCheck, 
   CheckCircle2, 
   Clock, 
-  User, 
-  Tag, 
-  DollarSign, 
-  FileText,
-  AlertCircle
+  Sparkles,
+  Flame,
+  Tag,
+  CreditCard
 } from 'lucide-react';
+import { apiFetch } from '../utils/apiClient';
 
 export default function LeadModal({ lead, onClose, onUpdateLead, onTriggerFollowUp }) {
   const [conversation, setConversation] = useState([]);
@@ -24,7 +27,7 @@ export default function LeadModal({ lead, onClose, onUpdateLead, onTriggerFollow
   useEffect(() => {
     if (!lead) return;
     setLoadingConv(true);
-    fetch(`/api/leads/${lead.id}/conversation`)
+    apiFetch(`/api/leads/${lead.id}/conversation`)
       .then(res => {
         if (!res.ok) throw new Error('Fetch failed');
         return res.json();

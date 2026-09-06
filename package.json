@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "concurrently \"node backend/server.js\" \"vite\"",
+    "tunnel": "npx -y localtunnel --port 5000",
     "server": "node backend/server.js",
     "client": "vite",
     "build": "vite build",
